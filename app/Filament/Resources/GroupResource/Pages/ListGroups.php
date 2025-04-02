@@ -15,7 +15,7 @@ class ListGroups extends ListRecords
         return [
             Actions\CreateAction::make()
                 ->createAnother(false)
-                ->closeModalByClickingAway(false)
+                ->closeModalByClickingAway(false),
         ];
     }
 }

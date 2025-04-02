@@ -22,7 +22,7 @@ class CommentFactory extends Factory
         return [
             'student_id' => \App\Models\Student::query()->inRandomOrder()->first()?->id,
             'user_id' => \App\Models\User::query()->inRandomOrder()->first()?->id,
-            'comment' =>  $arabicText ,
+            'comment' => $arabicText,
             'created_at' => now(),
         ];
     }

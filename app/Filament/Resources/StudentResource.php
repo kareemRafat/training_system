@@ -2,39 +2,36 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Actions\BulkActions\UpdateStatusBulkAction;
+use App\Filament\Actions\BulkActions\UpdateTrainingGroupBulkAction;
+use App\Filament\Actions\NormalActions\AddCommentAction;
+use App\Filament\Actions\NormalActions\ShowCommentAction;
+use App\Filament\Actions\NormalActions\UpdateTrainingGroupAction;
+use App\Filament\Resources\StudentResource\Pages;
 use App\Models\Group;
-use App\Models\Student;
-use Filament\Forms\Form;
 use App\Models\Instructor;
-use Filament\Tables\Table;
+use App\Models\Student;
+use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Filters\Filter;
-use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
+use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\StudentResource\Pages;
-use App\Filament\Actions\NormalActions\AddCommentAction;
-use App\Filament\Actions\NormalActions\ShowCommentAction;
-use App\Filament\Actions\BulkActions\UpdateStatusBulkAction;
-use App\Filament\Actions\NormalActions\UpdateTrainingGroupAction;
-use App\Filament\Actions\BulkActions\UpdateTrainingGroupBulkAction;
+use Illuminate\Support\Facades\Auth;
 
 class StudentResource extends Resource
 {
-
-
-    public static function getEloquentQuery() : Builder
+    public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->with('comments'); // Eager loads comments
     }
-
 
     protected static ?string $model = Student::class;
 
@@ -69,8 +66,8 @@ class StudentResource extends Resource
                     ->options(
                         Group::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn($query) => $query // else show all groups
+                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn ($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     )
@@ -138,7 +135,7 @@ class StudentResource extends Resource
         return $table
             // show only the branch stuff to the employee
             ->modifyQueryUsing(
-                fn(Builder $query) => $query
+                fn (Builder $query) => $query
                     ->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                         $query->where('branch_id', Auth::user()->branch_id);
                     })
@@ -170,11 +167,11 @@ class StudentResource extends Resource
                 Tables\Columns\TextColumn::make('start')
                     ->label('ملاحظات البداية')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'directly' => 'success',
                         'delay' => 'warning',
                     })
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
                         'directly' => 'مـبـاشـر',
                         'delay' => 'تـأجـيـل',
                         default => $state,
@@ -187,11 +184,11 @@ class StudentResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('الحالة')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'normal' => 'success',
                         'important' => 'danger',
                     })
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
                         'normal' => 'عـادي',
                         'important' => 'مـسـتـعـجـل',
                         default => $state,
@@ -200,7 +197,7 @@ class StudentResource extends Resource
 
             ->filters([
                 Filter::make('status')
-                    ->query(fn(Builder $query): Builder => $query->where('status', 'important'))
+                    ->query(fn (Builder $query): Builder => $query->where('status', 'important'))
                     ->toggle()
                     ->label('المستعجلين')
                     ->columnSpanFull(),
@@ -216,8 +213,8 @@ class StudentResource extends Resource
                     ->options(
                         Group::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn($query) => $query // else show all groups
+                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn ($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     )
@@ -228,8 +225,8 @@ class StudentResource extends Resource
                     ->options(
                         Instructor::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn($query) => $query // else show all groups
+                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn ($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     )

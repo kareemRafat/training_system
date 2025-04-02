@@ -9,7 +9,6 @@ use Illuminate\Validation\ValidationException;
 
 class Login extends BaseAuth
 {
-
     // override getForm()
     protected function getForms(): array
     {
@@ -26,7 +25,6 @@ class Login extends BaseAuth
         ];
     }
 
-
     // override getLoginFormComponent()
     protected function getLoginFormComponent(): Component
     {
@@ -38,13 +36,12 @@ class Login extends BaseAuth
             ->extraInputAttributes(['tabindex' => 1]);
     }
 
-
     // override getCredentialsFromFormData()
     protected function getCredentialsFromFormData(array $data): array
     {
         return [
             'username' => $data['login'],
-            'password'  => $data['password'],
+            'password' => $data['password'],
         ];
     }
 

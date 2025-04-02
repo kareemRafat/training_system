@@ -2,18 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Resources\InstructorResource\Pages;
 use App\Models\Branch;
-use Filament\Forms\Form;
 use App\Models\Instructor;
-use Filament\Tables\Table;
+use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\InstructorResource\Pages;
+use Illuminate\Support\Facades\Auth;
 
 class InstructorResource extends Resource
 {

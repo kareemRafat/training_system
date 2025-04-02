@@ -55,8 +55,8 @@ class GroupResource extends Resource
                     ->options(
                         Instructor::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn($query) => $query // else show all groups
+                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn ($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     ),
@@ -66,8 +66,8 @@ class GroupResource extends Resource
                     ->options(
                         Branch::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn($query) => $query->where('id', Auth::user()->branch_id),
-                            fn($query) => $query // else show all groups
+                            fn ($query) => $query->where('id', Auth::user()->branch_id),
+                            fn ($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     )
@@ -80,7 +80,7 @@ class GroupResource extends Resource
         return $table
             // show only the branch stuff to the employee
             ->modifyQueryUsing(
-                fn(Builder $query) => $query
+                fn (Builder $query) => $query
                     ->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                         $query->where('branch_id', Auth::user()->branch_id);
                     })

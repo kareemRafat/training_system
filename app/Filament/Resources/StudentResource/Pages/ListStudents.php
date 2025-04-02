@@ -23,8 +23,7 @@ class ListStudents extends ListRecords
                     return $data;
                 }),
 
-            AddStudentsAction::make('addStudents')
-
+            AddStudentsAction::make('addStudents'),
 
         ];
     }

@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\StudentResource\Pages;
 
 use App\Filament\Resources\StudentResource;
-use App\Models\Student;
 use Filament\Actions;
 use Filament\Forms\Components\Textarea;
 use Filament\Infolists\Infolist;
@@ -16,7 +15,7 @@ class ViewComments extends ViewRecord
     protected static string $resource = StudentResource::class;
 
     protected static ?string $title = 'تعليقات الطالب';
-    
+
     // if you make a view the view blade will work
     // if not thie view prop the infolist will work
     protected static string $view = 'filament.pages.student-comments';

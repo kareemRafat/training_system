@@ -3,11 +3,11 @@
 namespace App\Filament\Actions\BulkActions;
 
 use App\Models\trainingGroup;
-use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
-use Filament\Tables\Actions\BulkAction;
 use Filament\Notifications\Notification;
+use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateTrainingGroupBulkAction extends BulkAction
 {
@@ -33,8 +33,8 @@ class UpdateTrainingGroupBulkAction extends BulkAction
                             ->where('start_date', '>=', now()->subMonths(6))
                             ->when(
                                 Auth::check() && Auth::user()->branch_id,
-                                fn($query) => $query->where('branch_id', Auth::user()->branch_id),
-                                fn($query) => $query // else show all groups
+                                fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
+                                fn ($query) => $query // else show all groups
                             )
                             ->pluck('name', 'id')
                     )

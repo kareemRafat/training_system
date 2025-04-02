@@ -33,16 +33,16 @@ class DatabaseSeeder extends Seeder
             'username' => 'hend',
             'email' => 'hend@mail.com',
             'password' => bcrypt('12345678'),
-            'branch_id' => 1
+            'branch_id' => 1,
         ]);
 
         // branches
         $branches = ['Mansoura', 'Tanta', 'Zagazig'];
         $branchesInArabic = ['المنصورة', 'طنطا', 'الزقازيق'];
-        foreach ($branches as $index =>  $branch) {
+        foreach ($branches as $index => $branch) {
             Branch::factory()->create([
-                'name' => $branch ,
-                'arabic_name' => $branchesInArabic[$index]
+                'name' => $branch,
+                'arabic_name' => $branchesInArabic[$index],
             ]);
         }
 

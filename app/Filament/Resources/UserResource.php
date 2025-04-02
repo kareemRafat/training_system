@@ -2,21 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use App\Models\User;
-use Filament\Tables;
+use App\Filament\Resources\UserResource\Pages;
 use App\Models\Branch;
+use App\Models\User;
+use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\UserResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\UserResource\RelationManagers;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
@@ -50,12 +46,12 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('password')
                     ->label('الباسورد')
                     ->password()
-                    ->helperText(function($component) {
+                    ->helperText(function ($component) {
                         if ($component->getModelInstance()->exists) {
                             return 'فى حالة عدم الرغبة فى تعديل الباسورد يرجى ترك الحقل فارغاً';
                         }
                     })
-                    ->required(fn($component) => !$component->getModelInstance()->exists)
+                    ->required(fn ($component) => ! $component->getModelInstance()->exists)
                     ->revealable()
                     ->rules(function ($component) {
                         return $component->getModelInstance()->exists
@@ -67,11 +63,11 @@ class UserResource extends Resource
                         'confirmed' => 'يجب ان تكون كلمة المرور وتأكيدها متطابقتين',
                     ])
                     // Prevent empty values from being sent
-                    ->dehydrated(fn($state) => filled($state)),
+                    ->dehydrated(fn ($state) => filled($state)),
                 Forms\Components\TextInput::make('password_confirmation')
                     ->label('تـاكـيد الـباسورد')
                     ->password()
-                    ->required(fn($component) => !$component->getModelInstance()->exists)
+                    ->required(fn ($component) => ! $component->getModelInstance()->exists)
                     ->revealable()
                     ->rules(function ($component) {
                         // Apply 'required_if' only during updates

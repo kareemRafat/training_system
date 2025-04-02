@@ -2,19 +2,14 @@
 
 namespace App\Filament\Resources\TrainingGroupResource\Pages;
 
-use Filament\Tables;
+use App\Filament\Resources\TrainingGroupResource;
 use App\Models\Student;
-use Filament\Tables\Table;
-use Filament\Infolists\Infolist;
-use Filament\Support\Enums\FontWeight;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Resources\Pages\ViewRecord;
-use Filament\Resources\Pages\ListRecords;
-use Filament\Forms\Components\Placeholder;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
-use App\Filament\Resources\TrainingGroupResource;
-use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Enums\FontWeight;
 
 class ViewStudents extends ViewRecord
 {
@@ -24,7 +19,7 @@ class ViewStudents extends ViewRecord
 
     protected static ?string $breadcrumb = 'عـرض الـطلاب';
 
-    protected $start = 0 ;
+    protected $start = 0;
 
     public function infolist(Infolist $infolist): Infolist
     {
@@ -56,14 +51,14 @@ class ViewStudents extends ViewRecord
                             ->schema([
                                 TextEntry::make('index')
                                     ->label('')
-                                    ->formatStateUsing(fn () => ++$this->start )
+                                    ->formatStateUsing(fn () => ++$this->start)
                                     ->size(TextEntry\TextEntrySize::Small)
                                     ->default(1)
                                     ->weight(FontWeight::Bold)
                                     ->columnSpanFull()
                                     ->extraAttributes([
                                         'class' => 'bg-gray-200 text-black font-bold text-center rounded-full h-10 flex items-center px-4',
-                                        'style' => 'width:fit-content'
+                                        'style' => 'width:fit-content',
                                     ]),
                                 TextEntry::make('name')
                                     ->label('الإسـم')
@@ -81,14 +76,12 @@ class ViewStudents extends ViewRecord
                                     ->label('جـروب الـكـورس')
                                     ->size(TextEntry\TextEntrySize::Medium)
                                     ->icon('heroicon-s-user-group')
-                                    ->iconColor('warning')
+                                    ->iconColor('warning'),
                                 // Other student fields...
                             ])
                             ->columns(4)
-                            ->grid(1)
+                            ->grid(1),
                     ]),
             ]);
     }
 }
-
-

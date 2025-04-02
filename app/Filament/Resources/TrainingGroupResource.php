@@ -2,23 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Branch;
-use Filament\Forms\Form;
-use App\Models\Instructor;
-use Filament\Tables\Table;
-use App\Models\TrainingGroup;
-use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
-use Filament\Support\Enums\FontFamily;
-use Filament\Support\Enums\FontWeight;
-use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\TrainingGroupResource\Pages;
 use App\Filament\Resources\TrainingGroupResource\Pages\ViewStudents;
-use App\Filament\Resources\TrainingGroupResource\RelationManagers\StudentsRelationManager;
+use App\Models\Branch;
+use App\Models\Instructor;
+use App\Models\TrainingGroup;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Support\Enums\FontFamily;
+use Filament\Support\Enums\FontWeight;
+use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class TrainingGroupResource extends Resource
 {
@@ -179,7 +178,7 @@ class TrainingGroupResource extends Resource
     {
         return [
             'index' => Pages\ListTrainingGroups::route('/'),
-            'view-students' => ViewStudents::route('/{record}/students')
+            'view-students' => ViewStudents::route('/{record}/students'),
         ];
     }
 }

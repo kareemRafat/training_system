@@ -2,21 +2,21 @@
 
 namespace App\Filament\Resources\StudentResource\Pages;
 
-use App\Models\Group;
-use Filament\Forms\Get;
-use Filament\Actions;
-use Illuminate\Validation\Rule;
-use Filament\Resources\Pages\Page;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Radio;
-use Illuminate\Support\Facades\Auth;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\TextInput;
-use Filament\Notifications\Notification;
 use App\Filament\Resources\StudentResource;
+use App\Models\Group;
+use Filament\Actions;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Get;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\Page;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class AddStudents extends Page
 {
@@ -71,7 +71,7 @@ class AddStudents extends Page
                         fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
                         fn ($query) => $query
                     )
-                        ->orderBy('end_date' , 'desc')
+                        ->orderBy('end_date', 'desc')
                         ->limit(5)
                         ->pluck('name', 'id')
                 )

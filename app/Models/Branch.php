@@ -12,5 +12,5 @@ class Branch extends Model
 
     public $timestamps = false;
 
-    public $fillable = ['name' , 'arabic_name'];
+    public $fillable = ['name', 'arabic_name'];
 }
