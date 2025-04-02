@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('phone')->nullable();
             $table->enum('status', ['normal', 'important'])->default('normal');
             $table->enum('start', ['directly', 'delay'])->default('delay');

@@ -234,7 +234,6 @@ class OldStudentResource extends Resource
                     )
                     ->attribute('training_group_id')
                     ->label('جروب التدريب')
-                    ->searchable(),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormColumns(2)
             ->filtersTriggerAction(
