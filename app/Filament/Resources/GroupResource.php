@@ -41,7 +41,12 @@ class GroupResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->validationMessages([
                         'unique' => 'الإسم مسجل مسبقاً',
-                    ]),
+                    ])
+                    ->live()
+                    ->afterStateUpdated(function ($livewire, $component) {
+                        // live validation
+                        $livewire->validateOnly($component->getStatePath());
+                    }),
                 Forms\Components\DatePicker::make('start_date')
                     ->required()
                     ->label('تاريخ البدء'),

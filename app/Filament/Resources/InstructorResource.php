@@ -41,7 +41,12 @@ class InstructorResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->validationMessages([
                         'unique' => 'الإسم مسجل مسبقاً',
-                    ]),
+                    ])
+                    ->live()
+                    ->afterStateUpdated(function ($livewire, $component) {
+                        // live validation
+                        $livewire->validateOnly($component->getStatePath());
+                    }),
                 Forms\Components\Select::make('branch_id')
                     ->required()
                     ->label('الفرع')

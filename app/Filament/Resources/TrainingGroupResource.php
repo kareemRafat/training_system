@@ -47,6 +47,10 @@ class TrainingGroupResource extends Resource
                     ->validationMessages([
                         'unique' => 'الإسم مسجل مسبقاً',
                     ])
+                    ->live()
+                    ->afterStateUpdated(function ($livewire, $component) {
+                        $livewire->validateOnly($component->getStatePath());
+                    })
                     ->helperText('اسم المجموعة يجب ان يكون غير مستخدم من قبل'),
                 Forms\Components\DatePicker::make('start_date')
                     ->required()

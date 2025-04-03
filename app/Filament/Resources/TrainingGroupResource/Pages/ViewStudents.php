@@ -19,6 +19,8 @@ class ViewStudents extends ViewRecord
 
     protected static ?string $breadcrumb = 'عـرض الـطلاب';
 
+    // no $view prop the infolist is rendered
+
     protected $start = 0;
 
     public function infolist(Infolist $infolist): Infolist
@@ -57,7 +59,7 @@ class ViewStudents extends ViewRecord
                                     ->weight(FontWeight::Bold)
                                     ->columnSpanFull()
                                     ->extraAttributes([
-                                        'class' => 'bg-gray-200 text-black font-bold text-center rounded-full h-10 flex items-center px-4',
+                                        'class' => 'bg-gray-200 dark:bg-gray-600 text-black dark:text-white font-bold text-center rounded-full h-10 flex items-center px-4',
                                         'style' => 'width:fit-content',
                                     ]),
                                 TextEntry::make('name')
