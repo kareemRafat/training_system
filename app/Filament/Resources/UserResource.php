@@ -10,10 +10,12 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
+use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Actions\NormalActions\UserActions\DisableUserAction;
+
 
 class UserResource extends Resource
 {
@@ -130,6 +132,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                DisableUserAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -3,12 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Filament\Panel;
 use Filament\Models\Contracts\HasAvatar;
+use Illuminate\Notifications\Notifiable;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements HasAvatar
+class User extends Authenticatable implements HasAvatar , FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -24,6 +27,7 @@ class User extends Authenticatable implements HasAvatar
         'email',
         'password',
         'branch_id',
+        'is_active',
     ];
 
     /**
@@ -56,6 +60,12 @@ class User extends Authenticatable implements HasAvatar
 
     public function getFilamentAvatarUrl(): ?string
     {
-        return 'https://api.dicebear.com/9.x/fun-emoji/svg?seed='.$this->username;
+        return 'https://api.dicebear.com/9.x/shapes/svg?seed='. ($this->username == 'hala' ? 'halaadd' : $this->username);
+    }
+
+    // FilamentUser interface
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->is_active == 'active' ;
     }
 }

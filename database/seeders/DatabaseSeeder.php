@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'kareem',
             'email' => 'kareem@mail.com',
             'password' => bcrypt('12345678'),
+            'is_active' => 'active',
         ]);
 
         User::factory()->create([
@@ -34,6 +35,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'hend@mail.com',
             'password' => bcrypt('12345678'),
             'branch_id' => 1,
+            'is_active' => 'banned',
         ]);
 
         // branches

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->foreignIdFor(Branch::class)->nullable();
+            $table->enum('is_active', ['active', 'banned'])->default('active');
             $table->rememberToken();
             $table->timestamps();
         });
