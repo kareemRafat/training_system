@@ -105,6 +105,7 @@ class UserResource extends Resource
                 fn (Builder $query) => $query->whereNot('username', 'kareem')
             )
             ->recordAction(null) // prevent clickable row
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('الإسـم')
