@@ -16,9 +16,10 @@ class ListTrainingGroups extends ListRecords
         return [
             Actions\CreateAction::make()
                 ->createAnother(false)
-                // after lifecycle hook when create with modal
-                ->after(function () {
-                    Mail::raw('Test email', function ($message) {
+                // use after lifecycle hook when create with modal
+                ->after(function ($record) {
+                    // send email to the user
+                    Mail::raw("new ({$record->name}) group has beend creted", function ($message) {
                         $message->to('mohamedtogo200@yahoo.com')->subject('trainig group has been created');
                     });
                 }),

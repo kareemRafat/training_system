@@ -2,17 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Pages;
-use App\Models\Branch;
-use App\Models\User;
 use Filament\Forms;
+use App\Models\User;
+use Filament\Tables;
+use App\Models\Branch;
 use Filament\Forms\Form;
+use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Support\Facades\Auth;
+use App\Filament\Resources\UserResource\Pages;
 
 class UserResource extends Resource
 {
@@ -35,14 +36,20 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('الإسم')
+                    ->label('الإسم بالعربي')
                     ->required()
-                    ->rules('required')
+                    ->rule('regex:/^[\p{Arabic}\s]+$/u')
+                    ->validationMessages([
+                        'regex' => 'يجب أن يتكون الاسم من أحرف عربية فقط',
+                    ])
                     ->unique(ignoreRecord: true),
                 Forms\Components\TextInput::make('username')
-                    ->label('إسم الدخول')
+                    ->label('إسم الدخول باللغة الإنجليزية')
                     ->required()
-                    ->rules('required'),
+                    ->rules('required')
+                    // convert to lowercase
+                    ->afterStateHydrated(fn($component, $state) => $component->state(strtolower($state)))
+                    ->dehydrateStateUsing(fn($state) => strtolower($state)),
                 Forms\Components\TextInput::make('password')
                     ->label('الباسورد')
                     ->password()
@@ -51,23 +58,19 @@ class UserResource extends Resource
                             return 'فى حالة عدم الرغبة فى تعديل الباسورد يرجى ترك الحقل فارغاً';
                         }
                     })
-                    ->required(fn ($component) => ! $component->getModelInstance()->exists)
+                    ->required(fn($component) => ! $component->getModelInstance()->exists)
                     ->revealable()
                     ->rules(function ($component) {
                         return $component->getModelInstance()->exists
                             ? ['nullable', 'confirmed']
                             : ['confirmed'];
                     })
-                    ->validationMessages([
-                        'required' => 'الباسورد مطلوبة',
-                        'confirmed' => 'يجب ان تكون كلمة المرور وتأكيدها متطابقتين',
-                    ])
                     // Prevent empty values from being sent
-                    ->dehydrated(fn ($state) => filled($state)),
+                    ->dehydrated(fn($state) => filled($state)),
                 Forms\Components\TextInput::make('password_confirmation')
                     ->label('تـاكـيد الـباسورد')
                     ->password()
-                    ->required(fn ($component) => ! $component->getModelInstance()->exists)
+                    ->required(fn($component) => ! $component->getModelInstance()->exists)
                     ->revealable()
                     ->rules(function ($component) {
                         // Apply 'required_if' only during updates
@@ -76,7 +79,7 @@ class UserResource extends Resource
                             : ['required'];
                     })
                     ->validationMessages([
-                        'required_if' => 'تأكيد الباسورد مطلوب عند إدخال كلمة مرور',
+                        // 'required_if' => 'تأكيد الباسورد مطلوب عند إدخال كلمة مرور',
                     ]),
                 Forms\Components\TextInput::make('email')
                     ->label('البريد الإلكتروني')
@@ -96,6 +99,10 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(
+                fn (Builder $query) => $query->whereNot('username', 'kareem')
+            )
+            ->recordAction(null) // prevent clickable row
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('الإسـم')
