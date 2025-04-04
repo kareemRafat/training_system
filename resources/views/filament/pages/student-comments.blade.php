@@ -18,7 +18,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4 flex gap-4">
                 {{-- Auto-incremented number --}}
                 <div class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                    <span class="text-gray-600 dark:text-gray-300 font-medium">{{ $loop->iteration }}</span>
+                    <span class="text-gray-950 dark:text-white font-medium">{{ $loop->iteration }}</span>
                 </div>
 
                 <div class="flex-1">

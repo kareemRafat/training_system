@@ -95,7 +95,7 @@ class StudentResource extends Resource
                     ->inputMode('tel')
                     ->helperText('يجب أن يكون الرقم مكون من 11 رقم')
                     ->live()
-                    ->afterStateUpdated(function ($state, callable $set , $livewire , $component) {
+                    ->afterStateUpdated(function ($state, callable $set, $livewire, $component) {
                         $set('phone', preg_replace('/[^0-9]/', '', $state));
                         // live validation
                         $livewire->validateOnly($component->getStatePath());

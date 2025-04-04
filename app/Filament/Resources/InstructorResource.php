@@ -59,7 +59,7 @@ class InstructorResource extends Resource
         return $table
             // show only the branch stuff to the employee
             ->modifyQueryUsing(
-                fn(Builder $query) => $query
+                fn (Builder $query) => $query
                     ->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                         $query->where('branch_id', Auth::user()->branch_id);
                     })

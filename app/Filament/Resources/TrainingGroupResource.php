@@ -2,23 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Branch;
-use Filament\Forms\Form;
-use App\Models\Instructor;
-use Filament\Tables\Table;
-use App\Models\TrainingGroup;
-use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Filament\Support\Enums\FontFamily;
-use Filament\Support\Enums\FontWeight;
-use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\TrainingGroupResource\Pages;
 use App\Filament\Resources\TrainingGroupResource\Pages\ViewStudents;
+use App\Models\Branch;
+use App\Models\Instructor;
+use App\Models\TrainingGroup;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Support\Enums\FontFamily;
+use Filament\Support\Enums\FontWeight;
+use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class TrainingGroupResource extends Resource
 {
@@ -70,8 +69,8 @@ class TrainingGroupResource extends Resource
                     ->options(
                         Instructor::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn($query) => $query // else show all groups
+                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn ($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     ),
@@ -81,8 +80,8 @@ class TrainingGroupResource extends Resource
                     ->options(
                         Branch::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn($query) => $query->where('id', Auth::user()->branch_id),
-                            fn($query) => $query // else show all groups
+                            fn ($query) => $query->where('id', Auth::user()->branch_id),
+                            fn ($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     )
@@ -95,7 +94,7 @@ class TrainingGroupResource extends Resource
         return $table
             // show only the branch stuff to the employee
             ->modifyQueryUsing(
-                fn(Builder $query) => $query
+                fn (Builder $query) => $query
                     ->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                         $query->where('branch_id', Auth::user()->branch_id);
                     })
@@ -113,16 +112,16 @@ class TrainingGroupResource extends Resource
                     ->extraAttributes([
                         'style' => 'letter-spacing: 1px;text-transform:capitalize;',
                     ])
-                    ->color(fn($record) => now()->diffInDays($record->start_date, false) <= -75 ? 'rose' : 'primary')
-                    ->url(fn($record) => static::getUrl('view-students', ['record' => $record]))
+                    ->color(fn ($record) => now()->diffInDays($record->start_date, false) <= -75 ? 'rose' : 'primary')
+                    ->url(fn ($record) => static::getUrl('view-students', ['record' => $record]))
                     ->openUrlInNewTab(false),
                 Tables\Columns\TextColumn::make('students_count')
                     // students_count (students:relation name)
                     ->label('عدد الطلاب')
                     ->counts('students')
                     ->badge()
-                    ->color(fn($state) => $state > 0 ? 'info' : 'warning')
-                    ->formatStateUsing(fn($state) => $state > 0 ? $state : 'لا يوجد طلاب'),
+                    ->color(fn ($state) => $state > 0 ? 'info' : 'warning')
+                    ->formatStateUsing(fn ($state) => $state > 0 ? $state : 'لا يوجد طلاب'),
                 Tables\Columns\TextColumn::make('start_date')
                     ->date('d - m - Y')
                     ->dateTooltip('M')
@@ -141,8 +140,8 @@ class TrainingGroupResource extends Resource
                     ->options(
                         Instructor::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn($query) => $query // else show all groups
+                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn ($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     )
@@ -152,14 +151,14 @@ class TrainingGroupResource extends Resource
                     ->options(
                         Branch::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn($query) => $query->where('id', Auth::user()->branch_id),
-                            fn($query) => $query // else show all groups
+                            fn ($query) => $query->where('id', Auth::user()->branch_id),
+                            fn ($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     )
                     ->attribute('branch_id')
                     ->label('الفرع')
-                    ->hidden(fn() => Auth::check() && Auth::user()->branch_id !== null),
+                    ->hidden(fn () => Auth::check() && Auth::user()->branch_id !== null),
             ], layout: FiltersLayout::AboveContent)
 
             ->actions([

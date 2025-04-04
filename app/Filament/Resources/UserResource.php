@@ -2,20 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use App\Models\User;
-use Filament\Tables;
+use App\Filament\Actions\NormalActions\UserActions\DisableUserAction;
+use App\Filament\Resources\UserResource\Pages;
 use App\Models\Branch;
+use App\Models\User;
+use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Actions\NormalActions\UserActions\DisableUserAction;
-
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
@@ -50,8 +49,8 @@ class UserResource extends Resource
                     ->required()
                     ->rules('required')
                     // convert to lowercase
-                    ->afterStateHydrated(fn($component, $state) => $component->state(strtolower($state)))
-                    ->dehydrateStateUsing(fn($state) => strtolower($state)),
+                    ->afterStateHydrated(fn ($component, $state) => $component->state(strtolower($state)))
+                    ->dehydrateStateUsing(fn ($state) => strtolower($state)),
                 Forms\Components\TextInput::make('password')
                     ->label('الباسورد')
                     ->password()
@@ -60,7 +59,7 @@ class UserResource extends Resource
                             return 'فى حالة عدم الرغبة فى تعديل الباسورد يرجى ترك الحقل فارغاً';
                         }
                     })
-                    ->required(fn($component) => ! $component->getModelInstance()->exists)
+                    ->required(fn ($component) => ! $component->getModelInstance()->exists)
                     ->revealable()
                     ->rules(function ($component) {
                         return $component->getModelInstance()->exists
@@ -68,11 +67,11 @@ class UserResource extends Resource
                             : ['confirmed'];
                     })
                     // Prevent empty values from being sent
-                    ->dehydrated(fn($state) => filled($state)),
+                    ->dehydrated(fn ($state) => filled($state)),
                 Forms\Components\TextInput::make('password_confirmation')
                     ->label('تـاكـيد الـباسورد')
                     ->password()
-                    ->required(fn($component) => ! $component->getModelInstance()->exists)
+                    ->required(fn ($component) => ! $component->getModelInstance()->exists)
                     ->revealable()
                     ->rules(function ($component) {
                         // Apply 'required_if' only during updates

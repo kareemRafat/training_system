@@ -2,17 +2,14 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Branch;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\BranchResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\BranchResource\RelationManagers;
+use App\Models\Branch;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class BranchResource extends Resource
 {
@@ -51,6 +48,7 @@ class BranchResource extends Resource
                     }),
                 Forms\Components\TextInput::make('arabic_name')
                     ->label('الإسم بالعربي')
+                    ->unique(ignoreRecord: true)
                     ->required()
                     ->validationMessages([
                         'unique' => 'الإسم مسجل مسبقاً',

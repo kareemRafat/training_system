@@ -2,14 +2,14 @@
 
 namespace App\Filament\Auth;
 
+use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\TextInput;
-use Filament\Pages\Auth\Login as BaseAuth;
-use Filament\Models\Contracts\FilamentUser;
-use Illuminate\Validation\ValidationException;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
-use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Pages\Auth\Login as BaseAuth;
+use Illuminate\Validation\ValidationException;
 
 class Login extends BaseAuth
 {
