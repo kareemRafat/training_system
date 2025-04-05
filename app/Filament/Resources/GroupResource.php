@@ -55,6 +55,7 @@ class GroupResource extends Resource
                     ->label('تاريخ الانتهاء')
                     ->default(now()),
                 Forms\Components\Select::make('instructor_id')
+                    ->native(false)
                     ->required()
                     ->label('المحاضر')
                     ->options(
@@ -66,6 +67,7 @@ class GroupResource extends Resource
                             ->pluck('name', 'id')
                     ),
                 Forms\Components\Select::make('branch_id')
+                    ->native(false)
                     ->required()
                     ->label('الفرع')
                     ->options(

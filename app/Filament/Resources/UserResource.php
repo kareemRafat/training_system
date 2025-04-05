@@ -88,6 +88,7 @@ class UserResource extends Resource
                     ->rules(['email', 'required']),
                 // ->email()
                 Forms\Components\Select::make('branch_id')
+                    ->native(false)
                     ->label('إسم الفرع')
                     ->required()
                     ->rules('required')

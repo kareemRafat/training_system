@@ -210,6 +210,7 @@ class StudentResource extends Resource
                     ->label('المستعجلين')
                     ->columnSpanFull(),
                 SelectFilter::make('start')
+                    ->native(false) // use native select
                     ->options([
                         'directly' => 'مباشرة',
                         'delay' => 'تأجيل',

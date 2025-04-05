@@ -48,6 +48,7 @@ class InstructorResource extends Resource
                         $livewire->validateOnly($component->getStatePath());
                     }),
                 Forms\Components\Select::make('branch_id')
+                    ->native(false)
                     ->required()
                     ->label('الفرع')
                     ->options(Branch::all()->pluck('name', 'id')),

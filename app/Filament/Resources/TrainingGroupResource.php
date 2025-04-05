@@ -64,6 +64,7 @@ class TrainingGroupResource extends Resource
                     }),
                 Forms\Components\Hidden::make('end_date'),
                 Forms\Components\Select::make('instructor_id')
+                    ->native(false)
                     ->required()
                     ->label('المحاضر')
                     ->options(
@@ -75,6 +76,7 @@ class TrainingGroupResource extends Resource
                             ->pluck('name', 'id')
                     ),
                 Forms\Components\Select::make('branch_id')
+                    ->native(false) // disable native select
                     ->required()
                     ->label('الفرع')
                     ->options(
@@ -137,6 +139,7 @@ class TrainingGroupResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('instructor')
+                    ->native(false)
                     ->options(
                         Instructor::when(
                             Auth::check() && Auth::user()->branch_id,
@@ -148,6 +151,7 @@ class TrainingGroupResource extends Resource
                     ->attribute('instructor_id')
                     ->label('المحاضر'),
                 SelectFilter::make('branch')
+                    ->native(false)
                     ->options(
                         Branch::when(
                             Auth::check() && Auth::user()->branch_id,

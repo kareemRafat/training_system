@@ -202,6 +202,7 @@ class OldStudentResource extends Resource
                     ->label('الغير متدربين')
                     ->columnSpanFull(),
                 SelectFilter::make('start')
+                    ->native(false)
                     ->options([
                         'directly' => 'مباشرة',
                         'delay' => 'تأجيل',
@@ -209,6 +210,7 @@ class OldStudentResource extends Resource
                     ->attribute('start')
                     ->label('ملاحظات البداية'),
                 SelectFilter::make('group')
+                    ->native(false)
                     ->options(
                         Group::when(
                             Auth::check() && Auth::user()->branch_id,
@@ -220,6 +222,7 @@ class OldStudentResource extends Resource
                     ->attribute('group_id')
                     ->label('مجموعة الكورس'),
                 SelectFilter::make('instructor')
+                    ->native(false)
                     ->options(
                         Instructor::when(
                             Auth::check() && Auth::user()->branch_id,
@@ -231,6 +234,7 @@ class OldStudentResource extends Resource
                     ->attribute('instructor_id')
                     ->label('المحاضر'),
                 SelectFilter::make('training_group')
+                    ->native(false)
                     ->options(
                         TrainingGroup::when(
                             Auth::check() && Auth::user()->branch_id,
