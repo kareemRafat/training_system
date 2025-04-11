@@ -77,8 +77,14 @@ class InstructorResource extends Resource
                     ->color('violet')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('branch.name')
-                    ->label('الفرع')
-                    ->sortable(),
+                    ->label('الفرع'),
+                Tables\Columns\IconColumn::make('active')
+                    ->label('الحالة')
+                    ->boolean()
+                    ->trueIcon('heroicon-s-check-circle')
+                    ->trueColor('success')
+                    ->falseIcon('heroicon-s-x-circle')
+                    ->falseColor('danger'),
             ])
             ->filters([
                 //
