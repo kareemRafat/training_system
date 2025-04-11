@@ -98,6 +98,7 @@ class AddStudents extends Page
                                 ->label('اسم الطالب')
                                 ->rule(['unique:students,name'])
                                 ->validationMessages([
+                                    'required' => 'يجب ادخال اسم الطالب',
                                     'unique' => "الإسم مسجل من قبل"
                                 ]),
                             TextInput::make('phone')
@@ -107,6 +108,7 @@ class AddStudents extends Page
                                 ->unique(ignoreRecord: true)
                                 ->rule(['unique:students,phone'])
                                 ->validationMessages([
+                                    'required' => 'يجب ادخال رقم التليفون',
                                     'unique' => "التليفون مسجل من قبل"
                                 ])
                                 ->inputMode('tel')
