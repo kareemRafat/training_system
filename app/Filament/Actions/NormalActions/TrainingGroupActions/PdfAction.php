@@ -2,13 +2,12 @@
 
 namespace App\Filament\Actions\NormalActions\TrainingGroupActions;
 
-use Filament\Forms\Components\Textarea;
-use Filament\Notifications\Notification;
+use Mpdf\Mpdf;
+use Mpdf\Output\Destination;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
-class RepeatAccepted
+class PdfAction
 {
     public static function make(): Action
     {
@@ -16,8 +15,52 @@ class RepeatAccepted
             ->label('طباعة')
             ->icon('heroicon-o-printer')
             ->color('success')
-            ->action(function (Model $record, $data): void {
-                //
+            ->action(function (Model $record) {
+                // Generate PDF
+                $mpdf = new Mpdf([
+                    'default_font' => 'readexpro',
+                    'mode' => 'utf-8',
+                    'format' => 'A4',
+                    'fontDir' => [
+                        public_path('fonts/'), // Path to your font files
+                        ...(new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir']
+                    ],
+                    'fontdata' => [
+                        'readexpro' => [
+                            'R' => 'ReadexPro-Regular.ttf',
+                            'B' => 'ReadexPro-Bold.ttf',
+                            'useOTL' => 0xFF,
+                        ],
+                    ],
+
+                    'default_font_size' => 16,
+                    'directionality' => 'ltr', // or 'rtl' if needed
+                    'autoScriptToLang' => true, // Automatically detect language
+                    'autoLangToFont' => true,   // Automatically switch font for language
+                    'autoArabic' => true,       // Enable Arabic script processing
+                    'useSubstitutions' => true, // Allow character substitutions
+                    'useKashida' => 75,        // Kashida elongation percentage
+                ]);
+
+                $mpdf->SetDirectionality('rtl');
+
+
+                // Get students for this training group
+                $students = $record->students; // Adjust based on your relationship
+
+                // HTML content
+                $html = view('filament.pdf.students', [
+                    'students' => $students,
+                    'trainingGroup' => $record->name,
+                ])->render();
+
+                $mpdf->WriteHTML($html);
+
+                // Output the PDF
+                return response()->streamDownload(
+                    fn() => $mpdf->Output(),
+                    "students_{$record->name}.pdf"
+                );
             });
     }
 }

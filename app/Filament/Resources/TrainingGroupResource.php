@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\NormalActions\TrainingGroupActions\PdfAction;
 use App\Filament\Resources\TrainingGroupResource\Pages;
 use App\Filament\Resources\TrainingGroupResource\Pages\ViewStudents;
 use App\Models\Branch;
@@ -175,6 +176,7 @@ class TrainingGroupResource extends Resource
 
             ->actions([
                 Tables\Actions\EditAction::make(),
+                PdfAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),
