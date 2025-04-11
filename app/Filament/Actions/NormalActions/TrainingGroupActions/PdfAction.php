@@ -44,7 +44,6 @@ class PdfAction
 
                 $mpdf->SetDirectionality('rtl');
 
-
                 // Get students for this training group
                 $students = $record->students; // Adjust based on your relationship
 

@@ -6,20 +6,20 @@
     <title>قائمة الطلاب</title>
     <style>
         body {
-            font-family: 'Readex Pro', sans-serif;
+            /* font-family: 'Readex Pro', sans-serif; */
             margin: 0;
             padding: 0;
         }
         header {
             color: black;
             text-align: center;
-            padding: 10px 0;
             text-transform: capitalize
         }
 
         header h4 {
             font-size : 30px;
-            letter-spacing :1px
+            letter-spacing :1px;
+            margin: 25px
         }
 
         .container {
@@ -38,8 +38,8 @@
         }
         th, td {
             text-align: right;
-            padding: 8px;
-            border: 1px solid #ddd;
+            padding: 11px 8px;
+            border: 1px solid #8e8e8e;
         }
         th {
             background-color: #f4f4f4;
