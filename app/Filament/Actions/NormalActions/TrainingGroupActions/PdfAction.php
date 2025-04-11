@@ -12,6 +12,7 @@ class PdfAction
     public static function make(): Action
     {
         return Action::make('printPDF')
+            ->disabled(fn($record) => $record->status == 'finished')
             ->label('طباعة')
             ->icon('heroicon-o-printer')
             ->color('success')
@@ -28,12 +29,11 @@ class PdfAction
                     'fontdata' => [
                         'readexpro' => [
                             'R' => 'ReadexPro-Regular.ttf',
-                            'B' => 'ReadexPro-Bold.ttf',
                             'useOTL' => 0xFF,
                         ],
                     ],
 
-                    'default_font_size' => 16,
+                    'default_font_size' => 12,
                     'directionality' => 'ltr', // or 'rtl' if needed
                     'autoScriptToLang' => true, // Automatically detect language
                     'autoLangToFont' => true,   // Automatically switch font for language
@@ -51,7 +51,7 @@ class PdfAction
                 // HTML content
                 $html = view('filament.pdf.students', [
                     'students' => $students,
-                    'trainingGroup' => $record->name,
+                    'trainingGroup' => $record,
                 ])->render();
 
                 $mpdf->WriteHTML($html);
@@ -59,7 +59,7 @@ class PdfAction
                 // Output the PDF
                 return response()->streamDownload(
                     fn() => $mpdf->Output(),
-                    "students_{$record->name}.pdf"
+                    "{$record->name}.pdf"
                 );
             });
     }
