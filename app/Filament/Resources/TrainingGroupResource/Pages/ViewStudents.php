@@ -41,19 +41,17 @@ class ViewStudents extends ViewRecord
                             ->iconColor('danger')
                             ->date('d - m - Y')
                             ->size(TextEntry\TextEntrySize::Medium),
-                        // Other group fields...
                     ])
                     ->columns(2),
 
                 Section::make('الـطـلاب')
-
                     ->schema([
                         RepeatableEntry::make('students')
                             ->label('الـطـلاب')
                             ->schema([
                                 TextEntry::make('index')
                                     ->label('')
-                                    ->formatStateUsing(fn () => ++$this->start)
+                                    ->formatStateUsing(fn() => ++$this->start)
                                     ->size(TextEntry\TextEntrySize::Small)
                                     ->default(1)
                                     ->weight(FontWeight::Bold)
@@ -79,7 +77,12 @@ class ViewStudents extends ViewRecord
                                     ->size(TextEntry\TextEntrySize::Medium)
                                     ->icon('heroicon-s-user-group')
                                     ->iconColor('warning'),
-                                // Other student fields...
+                                TextEntry::make('training_joined_at')
+                                    ->label('تاريخ الانضمام للمجموعة')
+                                    ->date('d - m - Y')
+                                    ->size(TextEntry\TextEntrySize::Medium)
+                                    ->icon('heroicon-s-calendar')
+                                    ->iconColor('info'),
                             ])
                             ->columns(4)
                             ->grid(1),

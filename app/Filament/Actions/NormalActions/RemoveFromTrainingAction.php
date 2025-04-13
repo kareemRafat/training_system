@@ -26,7 +26,10 @@ class RemoveFromTrainingAction extends Action
 
     public function remove(Model $record): void
     {
-        $record->update(['training_group_id' => null]);
+        $record->update([
+            'training_group_id' => null,
+            'training_joined_at' => null
+        ]);
 
         // ✅ Show success notification
         Notification::make()
