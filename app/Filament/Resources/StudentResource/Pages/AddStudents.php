@@ -6,17 +6,14 @@ use App\Filament\Resources\StudentResource;
 use App\Models\Group;
 use Filament\Actions;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
 class AddStudents extends Page
 {
@@ -66,8 +63,8 @@ class AddStudents extends Page
                 ->options(
                     Group::when(
                         Auth::check() && Auth::user()->branch_id,
-                        fn($query) => $query->where('branch_id', Auth::user()->branch_id),
-                        fn($query) => $query
+                        fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
+                        fn ($query) => $query
                     )
                         ->orderBy('end_date', 'desc')
                         ->limit(5)
@@ -99,7 +96,7 @@ class AddStudents extends Page
                                 ->rule(['unique:students,name'])
                                 ->validationMessages([
                                     'required' => 'يجب ادخال اسم الطالب',
-                                    'unique' => "الإسم مسجل من قبل"
+                                    'unique' => 'الإسم مسجل من قبل',
                                 ]),
                             TextInput::make('phone')
                                 ->required()
@@ -109,7 +106,7 @@ class AddStudents extends Page
                                 ->rule(['unique:students,phone'])
                                 ->validationMessages([
                                     'required' => 'يجب ادخال رقم التليفون',
-                                    'unique' => "التليفون مسجل من قبل"
+                                    'unique' => 'التليفون مسجل من قبل',
                                 ])
                                 ->inputMode('tel')
                                 ->helperText('يجب أن يكون الرقم مكون من 11 رقم')
@@ -147,7 +144,7 @@ class AddStudents extends Page
                 ->label('طـلاب جـدد')
                 ->collapsible()
                 ->columnSpanFull()
-                ->itemLabel(fn(array $state): ?string => $state['name'] ?: 'طالب جديد'),
+                ->itemLabel(fn (array $state): ?string => $state['name'] ?: 'طالب جديد'),
         ];
     }
 

@@ -18,7 +18,7 @@ class UpdateTrainingGroupBulkAction extends BulkAction
                 // $data -> form-data ---- $records -> the row need to update
                 $records->each->update([
                     'training_group_id' => $data['training_group_id'],
-                    'training_joined_at' => now(config('app.timezone'))->toDateTimeString()
+                    'training_joined_at' => now(config('app.timezone'))->toDateTimeString(),
                 ]);
 
                 Notification::make()

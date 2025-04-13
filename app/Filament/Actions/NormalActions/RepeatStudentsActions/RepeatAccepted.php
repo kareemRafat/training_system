@@ -13,9 +13,9 @@ class RepeatAccepted
     public static function make(): Action
     {
         return Action::make('acceptRepeatedStudent')
-            ->label(fn(Model $record): string => $record->repeat_status === 'accepted' ? 'طلب  إعادة' : 'أضافة الى جروب')
-            ->color(fn(Model $record): string => $record->repeat_status === 'accepted' ? 'danger' : 'success')
-            ->icon(fn(Model $record): string => $record->repeat_status === 'accepted' ? 'heroicon-s-user-minus' : 'heroicon-s-user-plus')
+            ->label(fn (Model $record): string => $record->repeat_status === 'accepted' ? 'طلب  إعادة' : 'أضافة الى جروب')
+            ->color(fn (Model $record): string => $record->repeat_status === 'accepted' ? 'danger' : 'success')
+            ->icon(fn (Model $record): string => $record->repeat_status === 'accepted' ? 'heroicon-s-user-minus' : 'heroicon-s-user-plus')
             ->requiresConfirmation()
             ->form([
                 Textarea::make('comment')

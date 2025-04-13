@@ -11,9 +11,9 @@ class DisableInstructorAction
     public static function make(): Action
     {
         return Action::make('disableInstructor')
-            ->label(fn(Model $record): string => $record->active ? 'تعطيل' : 'تفعيل')
-            ->color(fn(Model $record): string => $record->active ? 'danger' : 'success')
-            ->icon(fn(Model $record): string => ! $record->active ? 'heroicon-s-user-minus' : 'heroicon-s-user-plus')
+            ->label(fn (Model $record): string => $record->active ? 'تعطيل' : 'تفعيل')
+            ->color(fn (Model $record): string => $record->active ? 'danger' : 'success')
+            ->icon(fn (Model $record): string => ! $record->active ? 'heroicon-s-user-minus' : 'heroicon-s-user-plus')
             ->requiresConfirmation()
             ->action(function (Model $record): void {
                 // dd($record);

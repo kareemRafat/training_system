@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\TrainingGroupResource\Pages;
 
 use App\Filament\Resources\TrainingGroupResource;
-use App\Models\Student;
 use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -51,7 +50,7 @@ class ViewStudents extends ViewRecord
                             ->schema([
                                 TextEntry::make('index')
                                     ->label('')
-                                    ->formatStateUsing(fn() => ++$this->start)
+                                    ->formatStateUsing(fn () => ++$this->start)
                                     ->size(TextEntry\TextEntrySize::Small)
                                     ->default(1)
                                     ->weight(FontWeight::Bold)

@@ -28,7 +28,7 @@ class RemoveFromTrainingAction extends Action
     {
         $record->update([
             'training_group_id' => null,
-            'training_joined_at' => null
+            'training_joined_at' => null,
         ]);
 
         // ✅ Show success notification

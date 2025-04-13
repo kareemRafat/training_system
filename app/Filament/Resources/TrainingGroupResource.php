@@ -176,7 +176,7 @@ class TrainingGroupResource extends Resource
 
             ->actions([
                 Tables\Actions\EditAction::make(),
-                PdfAction::make()
+                PdfAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([]),

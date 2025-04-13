@@ -2,17 +2,16 @@
 
 namespace App\Filament\Actions\NormalActions\TrainingGroupActions;
 
-use Mpdf\Mpdf;
-use Mpdf\Output\Destination;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
+use Mpdf\Mpdf;
 
 class PdfAction
 {
     public static function make(): Action
     {
         return Action::make('printPDF')
-            ->disabled(fn($record) => $record->status == 'finished')
+            ->disabled(fn ($record) => $record->status == 'finished')
             ->label('طباعة')
             ->icon('heroicon-o-printer')
             ->color('success')
@@ -24,7 +23,7 @@ class PdfAction
                     'format' => 'A4',
                     'fontDir' => [
                         public_path('fonts/'), // Path to your font files
-                        ...(new \Mpdf\Config\ConfigVariables())->getDefaults()['fontDir']
+                        ...(new \Mpdf\Config\ConfigVariables)->getDefaults()['fontDir'],
                     ],
                     'fontdata' => [
                         'readexpro' => [
@@ -57,7 +56,7 @@ class PdfAction
 
                 // Output the PDF
                 return response()->streamDownload(
-                    fn() => $mpdf->Output(),
+                    fn () => $mpdf->Output(),
                     "{$record->name}.pdf"
                 );
             });
