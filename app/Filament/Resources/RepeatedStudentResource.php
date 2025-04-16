@@ -214,10 +214,6 @@ class RepeatedStudentResource extends Resource
                         return 'default';
                     })
                     ->default('لايوجد محاضر مطلوب'),
-                Tables\Columns\TextColumn::make('branch.name')
-                    ->label('اسم الفرع')
-                    ->numeric()
-                    ->visible(fn () => Auth::check() && is_null(Auth::user()->branch_id)),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('track_start')
@@ -242,6 +238,11 @@ class RepeatedStudentResource extends Resource
                                 ->where('branch_id', Auth::user()->branch_id);
                         })->whereActive(true)
                     ),
+                Tables\Filters\SelectFilter::make('branch_id')
+                    ->label('الفرع')
+                    ->native(false)
+                    ->relationship('branch', 'name')
+                    ->visible(fn () => Auth::check() && is_null(Auth::user()->branch_id)),
             ], layout: FiltersLayout::AboveContent)
 
             ->actions([
