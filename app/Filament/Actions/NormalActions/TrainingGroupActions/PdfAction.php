@@ -16,7 +16,7 @@ class PdfAction
             ->icon('heroicon-o-printer')
             ->color('success')
             ->action(function (Model $record) {
-                // Generate PDFs
+                // Generate PDF
                 $mpdf = new Mpdf([
                     'default_font' => 'readexpro',
                     'mode' => 'utf-8',
