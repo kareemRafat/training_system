@@ -22,7 +22,7 @@ class PdfAction
                     'mode' => 'utf-8',
                     'format' => 'A4',
                     'fontDir' => [
-                        public_path('fonts/'), // Path to your font files
+                        basename('public/fonts/'), // Path to your font files
                         ...(new \Mpdf\Config\ConfigVariables)->getDefaults()['fontDir'],
                     ],
                     'fontdata' => [
