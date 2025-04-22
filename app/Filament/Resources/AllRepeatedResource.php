@@ -237,6 +237,11 @@ class AllRepeatedResource extends Resource
                         'waiting' => 'في الإنتظار',
                         'accepted' => 'تم الإنضمام لجروب',
                     ]),
+                Tables\Filters\SelectFilter::make('branch_id')
+                    ->label('الفرع')
+                    ->native(false)
+                    ->relationship('branch', 'name')
+                    ->visible(fn () => Auth::check() && is_null(Auth::user()->branch_id)),
             ], layout: FiltersLayout::AboveContent)
 
             ->actions([
