@@ -57,14 +57,14 @@ class OldStudentResource extends Resource
                     $livewire->validateOnly($component->getStatePath());
                 }),
             Forms\Components\Select::make('training_group_id')
-                ->required(fn (callable $get) => $get('training_group_id') !== null)
+                ->required(fn(callable $get) => $get('training_group_id') !== null)
                 ->label('مجموعة التدريب')
                 ->searchable()
                 ->options(
                     TrainingGroup::when(
                         Auth::check() && Auth::user()->branch_id,
-                        fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                        fn ($query) => $query // else show all groups
+                        fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                        fn($query) => $query // else show all groups
                     )
                         ->limit(6)
                         ->pluck('name', 'id')
@@ -92,8 +92,8 @@ class OldStudentResource extends Resource
                 ->options(
                     Group::when(
                         Auth::check() && Auth::user()->branch_id,
-                        fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                        fn ($query) => $query // else show all groups
+                        fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                        fn($query) => $query // else show all groups
                     )
                         ->pluck('name', 'id')
                 ),
@@ -140,7 +140,7 @@ class OldStudentResource extends Resource
         return $table
             // show only the branch stuff to the employee
             ->modifyQueryUsing(
-                fn (Builder $query) => $query->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
+                fn(Builder $query) => $query->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                     $query->where('branch_id', Auth::user()->branch_id);
                 })
                     ->withCount('comments'),
@@ -168,13 +168,13 @@ class OldStudentResource extends Resource
                     ->label('ملاحظات البداية')
                     ->badge()
                     ->color(
-                        fn (string $state): string => match ($state) {
+                        fn(string $state): string => match ($state) {
                             'directly' => 'success',
                             'delay' => 'warning',
                         },
                     )
                     ->formatStateUsing(
-                        fn (string $state): string => match ($state) {
+                        fn(string $state): string => match ($state) {
                             'directly' => 'مـبـاشـر',
                             'delay' => 'تـأجـيـل',
                             default => $state,
@@ -193,7 +193,7 @@ class OldStudentResource extends Resource
             ])
             ->filters([
                 Filter::make('training_group_id')
-                    ->query(fn (Builder $query): Builder => $query->whereNull('training_group_id'))
+                    ->query(fn(Builder $query): Builder => $query->whereNull('training_group_id'))
                     ->toggle()
                     ->label('الغير متدربين')
                     ->columnSpanFull(),
@@ -210,8 +210,8 @@ class OldStudentResource extends Resource
                     ->options(
                         Group::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn ($query) => $query // else show all groups
+                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     )
@@ -222,23 +222,23 @@ class OldStudentResource extends Resource
                     ->options(
                         TrainingGroup::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn ($query) => $query // else show all groups
+                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn($query) => $query // else show all groups
                         )
                             ->orderBy('start_date', 'desc')
                             ->pluck('name', 'id')
                     )
                     ->attribute('training_group_id')
                     ->label('جروب التدريب'),
-                    SelectFilter::make('branch')
+                SelectFilter::make('branch')
                     ->label('الفرع')
                     ->native(false)
                     ->relationship('branch', 'name')
-                    ->visible(fn () => Auth::check() && is_null(Auth::user()->branch_id)),
+                    ->visible(fn() => Auth::check() && is_null(Auth::user()->branch_id)),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormColumns(2)
             ->filtersTriggerAction(
-                fn (Action $action) => $action
+                fn(Action $action) => $action
                     ->button()
                     ->label('الفلاتر'),
             )
