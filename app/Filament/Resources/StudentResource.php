@@ -221,6 +221,11 @@ class StudentResource extends Resource
                     )
                     ->attribute('group_id')
                     ->label('المجموعة'),
+                SelectFilter::make('branch')
+                    ->label('الفرع')
+                    ->native(false)
+                    ->relationship('branch', 'name')
+                    ->visible(fn () => Auth::check() && is_null(Auth::user()->branch_id)),
             ], layout: FiltersLayout::AboveContent)
 
             ->actions([

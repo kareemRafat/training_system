@@ -18,6 +18,11 @@ class Student extends Model
         return $this->belongsTo(Group::class);
     }
 
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
+
     public function instructor()
     {
         return $this->belongsTo(Instructor::class);

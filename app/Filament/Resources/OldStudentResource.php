@@ -235,6 +235,11 @@ class OldStudentResource extends Resource
                     )
                     ->attribute('training_group_id')
                     ->label('جروب التدريب'),
+                SelectFilter::make('branch')
+                    ->label('الفرع')
+                    ->native(false)
+                    ->relationship('branch', 'name')
+                    ->visible(fn () => Auth::check() && is_null(Auth::user()->branch_id)),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormColumns(2)
             ->filtersTriggerAction(
