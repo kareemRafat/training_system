@@ -155,7 +155,12 @@ class StudentResource extends Resource
                     ->color('violet')
                     ->weight(FontWeight::Medium)
                     ->copyable()
-                    ->copyMessage('تم نسخ الاسم'),
+                    ->copyMessage('تم نسخ الاسم')
+                    ->tooltip(function ($record) {
+                        $groupName = ucwords($record->group->name);
+
+                        return "اسم الجروب : {$groupName}";
+                    }),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('رقم الموبايل')
                     ->searchable()
@@ -173,8 +178,6 @@ class StudentResource extends Resource
                         'delay' => 'تـأجـيـل',
                         default => $state,
                     }),
-                Tables\Columns\TextColumn::make('group.name')
-                    ->label('المجموعة'),
                 Tables\Columns\TextColumn::make('group.end_date')
                     ->label('تاريخ الانتهاء')
                     ->sortable(),

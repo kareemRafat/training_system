@@ -158,7 +158,12 @@ class OldStudentResource extends Resource
                     ->color('violet')
                     ->weight(FontWeight::Medium)
                     ->copyable()
-                    ->copyMessage('تم نسخ الاسم'),
+                    ->copyMessage('تم نسخ الاسم')
+                    ->tooltip(function ($record) {
+                        $groupName = ucwords($record->group->name);
+
+                        return "اسم الجروب : {$groupName}";
+                    }),
                 Tables\Columns\TextColumn::make('phone')
                     ->label('رقم الموبايل')
                     ->searchable()
@@ -180,8 +185,6 @@ class OldStudentResource extends Resource
                             default => $state,
                         },
                     ),
-                Tables\Columns\TextColumn::make('group.name')
-                    ->label('المجموعة'),
                 Tables\Columns\TextColumn::make('group.end_date')
                     ->label('تاريخ الانتهاء')
                     ->sortable(),
@@ -214,6 +217,7 @@ class OldStudentResource extends Resource
                             fn ($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
+
                     )
                     ->attribute('group_id')
                     ->label('مجموعة الكورس'),
@@ -225,6 +229,7 @@ class OldStudentResource extends Resource
                             fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
                             fn ($query) => $query // else show all groups
                         )
+                            ->whereStatus('active')
                             ->orderBy('start_date', 'desc')
                             ->pluck('name', 'id')
                     )
