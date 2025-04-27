@@ -29,6 +29,8 @@ class RemoveFromTrainingAction extends Action
         $record->update([
             'training_group_id' => null,
             'training_joined_at' => null,
+            'received_certificate' => false,
+            'has_certificate' => false,
         ]);
 
         // ✅ Show success notification

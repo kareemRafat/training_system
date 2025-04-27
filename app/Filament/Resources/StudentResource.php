@@ -247,18 +247,10 @@ class StudentResource extends Resource
 
             ->bulkActions([
                 // all rows action
-                Tables\Actions\BulkActionGroup::make([
-                    UpdateTrainingGroupBulkAction::make(),
-                    UpdateStatusBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([]),
+                UpdateTrainingGroupBulkAction::make(),
+                UpdateStatusBulkAction::make(),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

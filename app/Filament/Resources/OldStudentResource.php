@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\BulkActions\RecievedCertificateBulkAction;
 use App\Filament\Actions\NormalActions\AddCommentAction;
 use App\Filament\Actions\NormalActions\RemoveFromTrainingAction;
 use App\Filament\Actions\NormalActions\ShowCommentAction;
@@ -194,9 +195,16 @@ class OldStudentResource extends Resource
                     ->default('لم يتدرب بعد')
                     ->badge()
                     ->weight(FontWeight::SemiBold),
-                Tables\Columns\ToggleColumn::make('has_certificate')
+                Tables\Columns\IconColumn::make('received_certificate')
                     ->label('الشهادة')
-                    ->onIcon('heroicon-s-academic-cap') // Icon when ON (✓)
+                    ->boolean()
+                    ->trueIcon('heroicon-s-academic-cap')
+                    ->falseIcon('heroicon-o-minus')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
+                Tables\Columns\ToggleColumn::make('has_certificate')
+                    ->label('الاستلام')
+                    // ->onIcon('heroicon-s-academic-cap') // Icon when ON (✓)
                     // ->offIcon('heroicon-s-x-mark')
                     ->afterStateUpdated(function ($record, $state) {
                         if ($state) {
@@ -291,7 +299,8 @@ class OldStudentResource extends Resource
             ])
 
             ->bulkActions([
-                // Tables\Actions\BulkActionGroup::make([])
+                // Tables\Actions\BulkActionGroup::make([]),
+                RecievedCertificateBulkAction::make(),
             ]);
     }
 

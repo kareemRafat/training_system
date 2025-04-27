@@ -22,7 +22,8 @@ class StudentFactory extends Factory
             'status' => $this->faker->randomElement(['normal', 'important']),
             'group_id' => \App\Models\Group::query()->inRandomOrder()->first()?->id,
             'branch_id' => \App\Models\Branch::query()->inRandomOrder()->first()?->id,
-            'has_certificate' => $this->faker->boolean(),
+            'has_certificate' => 0,
+            'received_certificate' => 0,
             'created_at' => $this->faker->dateTimeBetween('-6 months', 'now'), // Random timestamp within the past year
         ];
     }

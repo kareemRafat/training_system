@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Group::class)->nullable();
             $table->foreignIdFor(\App\Models\Branch::class)->nullable();
             $table->foreignIdFor(\App\Models\TrainingGroup::class)->nullable();
+            $table->boolean('received_certificate')->default(false);
             $table->boolean('has_certificate')->default(false);
             $table->timestamp('training_joined_at')->format('Y-m-d H:i:s')->nullable();
             $table->timestamp('created_at')->nullable();

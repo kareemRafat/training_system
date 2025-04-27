@@ -11,7 +11,7 @@ class Student extends Model
 
     public $timestamps = false;
 
-    public $fillable = ['name', 'phone', 'status', 'start', 'group_id', 'instructor_id', 'created_at', 'branch_id', 'training_group_id', 'training_joined_at'];
+    public $fillable = ['name', 'phone', 'status', 'start', 'group_id', 'instructor_id', 'created_at', 'branch_id', 'training_group_id', 'training_joined_at', 'received_certificate', 'has_certificate'];
 
     public function group()
     {
