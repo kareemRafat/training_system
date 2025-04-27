@@ -12,6 +12,7 @@ use App\Models\Student;
 use App\Models\TrainingGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\FontFamily;
@@ -170,7 +171,7 @@ class OldStudentResource extends Resource
                     ->copyable()
                     ->copyMessage('تم نسخ الرقم'),
                 Tables\Columns\TextColumn::make('start')
-                    ->label('ملاحظات البداية')
+                    ->label('ملاحظات')
                     ->badge()
                     ->color(
                         fn (string $state): string => match ($state) {
@@ -193,6 +194,24 @@ class OldStudentResource extends Resource
                     ->default('لم يتدرب بعد')
                     ->badge()
                     ->weight(FontWeight::SemiBold),
+                Tables\Columns\ToggleColumn::make('has_certificate')
+                    ->label('الشهادة')
+                    ->onIcon('heroicon-s-academic-cap') // Icon when ON (✓)
+                    // ->offIcon('heroicon-s-x-mark')
+                    ->afterStateUpdated(function ($record, $state) {
+                        if ($state) {
+                            Notification::make()
+                                ->title('تم تسليم شهادة التدريب')
+                                ->success()
+                                ->send();
+                        } else {
+                            Notification::make()
+                                ->title('تم تعيين كغير مستلم للشهادة')
+                                ->danger()
+                                ->send();
+                        }
+                    }),
+
             ])
             ->filters([
                 Filter::make('training_group_id')
