@@ -207,6 +207,19 @@ class OldStudentResource extends Resource
                     // ->onIcon('heroicon-s-academic-cap') // Icon when ON (✓)
                     // ->offIcon('heroicon-s-x-mark')
                     ->afterStateUpdated(function ($record, $state) {
+                        $userId = auth()->id(); // Get the current logged-in user ID
+
+                        $comment = $state
+                            ? 'تم استلام الشهادة من الطالب'
+                            : 'حدث خطأ فى تسليم الشهادة للطالب';
+
+                        // Now save the comment — depends where you save it
+                        $record->comments()->create([
+                            'user_id' => $userId,
+                            'comment' => $comment,
+                            'created_at' => now()->setTimezone(config('app.timezone'))->toDateTimeString(),
+                        ]);
+
                         if ($state) {
                             Notification::make()
                                 ->title('تم تسليم شهادة التدريب')
