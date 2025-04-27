@@ -22,7 +22,7 @@ class ShowCommentAction extends Action
     protected function setUp(): void
     {
         $this
-            ->label('عرض التعليقات')
+            ->label('التعليقات')
             ->extraAttributes(['class' => 'text-xs p-1'])
             ->icon('heroicon-s-chat-bubble-bottom-center')
             ->badge(
