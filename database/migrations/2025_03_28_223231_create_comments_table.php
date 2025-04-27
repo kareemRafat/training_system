@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            // $table->foreignIdFor(Student::class);
             $table->foreignIdFor(User::class);
             $table->text('comment');
             $table->timestamp('created_at')->nullable();

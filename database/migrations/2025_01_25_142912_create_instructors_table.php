@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('instructors', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->foreignIdFor(\App\Models\Branch::class)->nullable();
             $table->boolean('active');
         });

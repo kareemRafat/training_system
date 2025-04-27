@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('repeated_students', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('phone');
             $table->enum('track_start', ['html', 'css', 'javascript', 'php', 'mysql', 'project'])->nullable();
             $table->enum('repeat_status', ['waiting', 'accepted'])->default('waiting');
