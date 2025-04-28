@@ -50,6 +50,7 @@ class StudentResource extends Resource
                     ->label('اسم الطالب')
                     ->columnSpan('full') // Make the input take the whole line
                     ->unique(ignoreRecord: true)
+                    ->rules('required')
                     ->live()
                     ->afterStateUpdated(function ($livewire, $component) {
                         // live validation
@@ -86,9 +87,9 @@ class StudentResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->inputMode('tel')
                     ->helperText('يجب أن يكون الرقم مكون من 11 رقم')
+                    ->rules('required|phone:eg,sa,ae')
                     ->live()
-                    ->afterStateUpdated(function ($state, callable $set, $livewire, $component) {
-                        $set('phone', preg_replace('/[^0-9]/', '', $state));
+                    ->afterStateUpdated(function ($livewire, $component) {
                         // live validation
                         $livewire->validateOnly($component->getStatePath());
                     }),

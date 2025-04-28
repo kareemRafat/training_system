@@ -57,7 +57,13 @@ class RepeatedStudentResource extends Resource
                 Forms\Components\TextInput::make('phone')
                     ->label('رقم الهاتف')
                     ->unique(ignoreRecord: true)
-                    ->required(),
+                    ->required()
+                    ->rules('required|phone:eg,sa,ae')
+                    ->live()
+                    ->afterStateUpdated(function ($livewire, $component) {
+                        // live validation
+                        $livewire->validateOnly($component->getStatePath());
+                    }),
                 Forms\Components\Select::make('track_start')
                     ->label('إعادة من ...')
                     ->native(false)
