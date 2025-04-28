@@ -164,7 +164,6 @@ return [
     'uuid' => 'The :attribute field must be a valid UUID.',
     'phone' => 'رقم الهاتف غير صحيح',
 
-
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
