@@ -14,7 +14,7 @@ class RecievedCertificateBulkAction extends BulkAction
             ->action(function (Collection $records, array $data): void {
                 // $data -> form-data ---- $records -> the row need to update
                 $records->each->update([
-                    'received_certificate' => true,
+                    'has_certificate' => true,
                 ]);
 
                 // ✅ Show success notification

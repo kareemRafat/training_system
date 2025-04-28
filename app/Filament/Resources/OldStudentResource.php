@@ -195,23 +195,35 @@ class OldStudentResource extends Resource
                     ->default('لم يتدرب بعد')
                     ->badge()
                     ->weight(FontWeight::SemiBold),
-                Tables\Columns\IconColumn::make('received_certificate')
+                Tables\Columns\IconColumn::make('has_certificate')
                     ->label('الشهادة')
                     ->boolean()
                     ->trueIcon('heroicon-s-academic-cap')
                     ->falseIcon('heroicon-o-minus')
                     ->trueColor('success')
                     ->falseColor('danger'),
-                Tables\Columns\ToggleColumn::make('has_certificate')
+                Tables\Columns\ToggleColumn::make('received_certificate')
                     ->label('الاستلام')
                     // ->onIcon('heroicon-s-academic-cap') // Icon when ON (✓)
                     // ->offIcon('heroicon-s-x-mark')
                     ->afterStateUpdated(function ($record, $state) {
-                        $userId = auth()->id(); // Get the current logged-in user ID
+                        $userId = Auth::id(); // Get the current logged-in user ID
 
                         $comment = $state
                             ? 'تم استلام الشهادة من الطالب'
                             : 'حدث خطأ فى تسليم الشهادة للطالب';
+
+                        if (! $record->has_certificate && $state) {
+                            $record->received_certificate = false;
+                            $record->save();
+
+                            Notification::make()
+                                ->title('لا يمكن تسليم الشهادة قبل طباعتها')
+                                ->warning()
+                                ->send();
+
+                            return;
+                        }
 
                         // Now save the comment — depends where you save it
                         $record->comments()->create([
