@@ -103,15 +103,17 @@ class AddStudents extends Page
                                 ->label('رقم الهاتف')
                                 ->type('tel')
                                 ->unique(ignoreRecord: true)
-                                ->rule(['unique:students,phone'])
+                                ->rule(['unique:students,phone', 'phone:eg,sa,ae'])
                                 ->validationMessages([
                                     'required' => 'يجب ادخال رقم التليفون',
                                     'unique' => 'التليفون مسجل من قبل',
                                 ])
                                 ->inputMode('tel')
                                 ->helperText('يجب أن يكون الرقم مكون من 11 رقم')
-                                ->afterStateUpdated(function ($state, callable $set) {
-                                    $set('phone', preg_replace('/[^0-9]/', '', $state));
+                                ->live()
+                                ->afterStateUpdated(function ($livewire, $component) {
+                                    // live validation
+                                    $livewire->validateOnly($component->getStatePath());
                                 }),
                             Radio::make('start')
                                 ->required()
