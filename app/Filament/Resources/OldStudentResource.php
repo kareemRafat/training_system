@@ -81,7 +81,7 @@ class OldStudentResource extends Resource
                 ])
                 ->inputMode('tel')
                 ->helperText('يجب أن يكون الرقم مكون من 11 رقم')
-                ->rules('required|phone:eg,sa,ae')
+                ->rules('required|phone:'.config('app.PHONE_COUNTRIES'))
                 ->live()
                 ->afterStateUpdated(function ($livewire, $component) {
                     // live validation

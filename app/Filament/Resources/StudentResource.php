@@ -66,8 +66,8 @@ class StudentResource extends Resource
                     ->options(
                         Group::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn ($query) => $query // else show all groups
+                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     )
@@ -87,7 +87,7 @@ class StudentResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->inputMode('tel')
                     ->helperText('يجب أن يكون الرقم مكون من 11 رقم')
-                    ->rules('required|phone:eg,sa,ae')
+                    ->rules('required|phone:' . config('app.PHONE_COUNTRIES'))
                     ->live()
                     ->afterStateUpdated(function ($livewire, $component) {
                         // live validation
@@ -136,7 +136,7 @@ class StudentResource extends Resource
         return $table
             // show only the branch stuff to the employee
             ->modifyQueryUsing(
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                         $query->where('branch_id', Auth::user()->branch_id);
                     })
@@ -170,11 +170,11 @@ class StudentResource extends Resource
                 Tables\Columns\TextColumn::make('start')
                     ->label('ملاحظات البداية')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'directly' => 'success',
                         'delay' => 'warning',
                     })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'directly' => 'مـبـاشـر',
                         'delay' => 'تـأجـيـل',
                         default => $state,
@@ -185,11 +185,11 @@ class StudentResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('الحالة')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'normal' => 'success',
                         'important' => 'danger',
                     })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'normal' => 'عـادي',
                         'important' => 'مـسـتـعـجـل',
                         default => $state,
@@ -198,7 +198,7 @@ class StudentResource extends Resource
 
             ->filters([
                 Filter::make('status')
-                    ->query(fn (Builder $query): Builder => $query->where('status', 'important'))
+                    ->query(fn(Builder $query): Builder => $query->where('status', 'important'))
                     ->toggle()
                     ->label('المستعجلين')
                     ->columnSpanFull(),
@@ -215,8 +215,8 @@ class StudentResource extends Resource
                     ->options(
                         Group::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn ($query) => $query // else show all groups
+                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     )
@@ -226,7 +226,7 @@ class StudentResource extends Resource
                     ->label('الفرع')
                     ->native(false)
                     ->relationship('branch', 'name')
-                    ->visible(fn () => Auth::check() && is_null(Auth::user()->branch_id)),
+                    ->visible(fn() => Auth::check() && is_null(Auth::user()->branch_id)),
             ], layout: FiltersLayout::AboveContent)
 
             ->actions([

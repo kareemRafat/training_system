@@ -54,7 +54,7 @@ class AllRepeatedResource extends Resource
                     ->label('رقم الهاتف')
                     ->unique(ignoreRecord: true)
                     ->required()
-                    ->rules('required|phone:eg,sa,ae')
+                    ->rules('required|phone:'.config('app.PHONE_COUNTRIES'))
                     ->live()
                     ->afterStateUpdated(function ($livewire, $component) {
                         // live validation

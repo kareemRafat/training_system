@@ -123,4 +123,17 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Phone Number Validation Countries
+    |--------------------------------------------------------------------------
+    |
+    | This configuration option determines which country codes are allowed for
+    | phone number validation. Multiple countries can be specified as a
+    | comma-separated list.
+    |
+    */
+
+    'PHONE_COUNTRIES' => env('PHONE_COUNTRIES', 'eg'),
+
 ];
