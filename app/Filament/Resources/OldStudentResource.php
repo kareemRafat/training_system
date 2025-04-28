@@ -148,7 +148,7 @@ class OldStudentResource extends Resource
                     ->withCount('comments'),
             )
             ->defaultPaginationPageOption(25)
-            ->recordAction(null) // prevent     clickable row
+            ->recordAction(null) // prevent clickable row
             ->filtersFormColumns(3)
             ->defaultSort('created_at', 'desc')
             ->striped()
@@ -171,22 +171,6 @@ class OldStudentResource extends Resource
                     ->searchable()
                     ->copyable()
                     ->copyMessage('تم نسخ الرقم'),
-                Tables\Columns\TextColumn::make('start')
-                    ->label('ملاحظات')
-                    ->badge()
-                    ->color(
-                        fn (string $state): string => match ($state) {
-                            'directly' => 'success',
-                            'delay' => 'warning',
-                        },
-                    )
-                    ->formatStateUsing(
-                        fn (string $state): string => match ($state) {
-                            'directly' => 'مـبـاشـر',
-                            'delay' => 'تـأجـيـل',
-                            default => $state,
-                        },
-                    ),
                 Tables\Columns\TextColumn::make('group.end_date')
                     ->label('تاريخ الانتهاء')
                     ->sortable(),
@@ -204,8 +188,6 @@ class OldStudentResource extends Resource
                     ->falseColor('danger'),
                 Tables\Columns\ToggleColumn::make('received_certificate')
                     ->label('الاستلام')
-                    // ->onIcon('heroicon-s-academic-cap') // Icon when ON (✓)
-                    // ->offIcon('heroicon-s-x-mark')
                     ->afterStateUpdated(function ($record, $state) {
                         $userId = Auth::id(); // Get the current logged-in user ID
 
