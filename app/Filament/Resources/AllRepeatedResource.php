@@ -232,7 +232,11 @@ class AllRepeatedResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('branch.name')
                     ->label('الفرع')
+<<<<<<< HEAD
                     ->toggleable(isToggledHiddenByDefault: true)
+=======
+                    ->toggleable()
+>>>>>>> cdcd04034e7709800baf6d7d740601f5e54ab74e
                     ->weight(FontWeight::Medium)
                     ->extraAttributes([
                         'style' => 'text-transform:capitalize'

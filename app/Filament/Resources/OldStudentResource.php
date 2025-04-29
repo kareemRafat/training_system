@@ -254,6 +254,10 @@ class OldStudentResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('branch.name')
                     ->label('الفرع')
+<<<<<<< HEAD
+=======
+                    ->toggleable()
+>>>>>>> cdcd04034e7709800baf6d7d740601f5e54ab74e
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->weight(FontWeight::Medium)
                     ->extraAttributes([
