@@ -23,13 +23,15 @@ class RecievedCertificateBulkAction extends BulkAction
                         Notification::make()
                             ->title("تم إضافة  {$record->name} الى طباعة الشهادات")
                             ->success()
-                            ->seconds(8)
+                            ->seconds(10)
+                            ->color('success')
                             ->send();
                     } else {
                         Notification::make()
                             ->title("لا يمكن طباعة شهادة للطالب {$record->name}")
                             ->warning()
-                            ->seconds(8)
+                            ->seconds(10)
+                            ->color('warning')
                             ->send();
                     }
                 });
