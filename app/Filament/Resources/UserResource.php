@@ -2,20 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Actions\NormalActions\UserActions\DisableUserAction;
-use App\Filament\Resources\UserResource\Pages;
-use App\Models\Branch;
-use App\Models\User;
 use Filament\Forms;
+use App\Models\User;
+use Filament\Tables;
+use App\Models\Branch;
 use Filament\Forms\Form;
+use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\UserResource\Pages;
+use Illuminate\Auth\Access\AuthorizationException;
+use App\Filament\Actions\NormalActions\UserActions\DisableUserAction;
 
 class UserResource extends Resource
 {
@@ -163,6 +164,10 @@ class UserResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return Auth::check() && ! Auth::user()->branch_id;
+
+        if (!Auth::check() || Auth::user()->branch_id) {
+            throw new AuthorizationException("You don't have permission to view this.");
+        }
+        return  true ;
     }
 }
