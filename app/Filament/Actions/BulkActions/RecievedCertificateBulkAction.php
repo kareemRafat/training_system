@@ -13,15 +13,26 @@ class RecievedCertificateBulkAction extends BulkAction
         return parent::make($name)
             ->action(function (Collection $records, array $data): void {
                 // $data -> form-data ---- $records -> the row need to update
-                $records->each->update([
-                    'has_certificate' => true,
-                ]);
+                $records->each(function ($record) {
+                    if ($record->training_group !== null) {
+                        $record->update([
+                            'has_certificate' => true,
+                        ]);
 
-                // ✅ Show success notification
-                Notification::make()
-                    ->title('تم إضافة الى طباعة الشهادات')
-                    ->success()
-                    ->send();
+                        // ✅ Show success notification
+                        Notification::make()
+                            ->title("تم إضافة  {$record->name} الى طباعة الشهادات")
+                            ->success()
+                            ->seconds(8)
+                            ->send();
+                    } else {
+                        Notification::make()
+                            ->title("لا يمكن طباعة شهادة للطالب {$record->name}")
+                            ->warning()
+                            ->seconds(8)
+                            ->send();
+                    }
+                });
             })
             ->icon('heroicon-s-academic-cap')
             ->color('success')
