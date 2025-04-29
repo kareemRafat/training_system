@@ -54,7 +54,7 @@ class AllRepeatedResource extends Resource
                     ->label('رقم الهاتف')
                     ->unique(ignoreRecord: true)
                     ->required()
-                    ->rules('required|phone:'.config('app.PHONE_COUNTRIES'))
+                    ->rules('required|phone:' . config('app.PHONE_COUNTRIES'))
                     ->live()
                     ->afterStateUpdated(function ($livewire, $component) {
                         // live validation
@@ -79,11 +79,11 @@ class AllRepeatedResource extends Resource
                     ->relationship(
                         'branch',
                         'name',
-                        fn (Builder $query) => $query->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
+                        fn(Builder $query) => $query->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                             $query->where('id', Auth::user()->branch_id);
                         })
                     )
-                    ->default(fn () => Auth::user()->branch_id),
+                    ->default(fn() => Auth::user()->branch_id),
                 Forms\Components\Select::make('group_id')
                     ->label('المجموعة السابقة')
                     ->native(false)
@@ -92,8 +92,8 @@ class AllRepeatedResource extends Resource
                     ->options(
                         Group::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn ($query) => $query // else show all groups
+                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
                     ),
@@ -104,7 +104,7 @@ class AllRepeatedResource extends Resource
                     ->relationship(
                         'instructor',
                         'name',
-                        fn (Builder $query) => $query->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
+                        fn(Builder $query) => $query->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                             $query
                                 ->where('branch_id', Auth::user()->branch_id);
                         })->whereActive(true)
@@ -139,7 +139,7 @@ class AllRepeatedResource extends Resource
     {
         return $table
             ->modifyQueryUsing(
-                fn (Builder $query) => $query
+                fn(Builder $query) => $query
                     ->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                         $query->where('branch_id', Auth::user()->branch_id);
                     })
@@ -162,13 +162,20 @@ class AllRepeatedResource extends Resource
                 Tables\Columns\TextColumn::make('phone')
                     ->label('رقم الهاتف')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('group.name')
+                    ->label('المجموعة')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->weight(FontWeight::Medium)
+                    ->extraAttributes([
+                        'style' => 'text-transform:capitalize'
+                    ]),
                 Tables\Columns\TextColumn::make('track_start')
                     ->label('إعادة من')
                     ->extraAttributes([
                         'style' => 'padding: 6px 8px; border-radius: 6px;width:fit-content;',
                         'class' => 'border border-[#f1d9d9] dark:bg-gray-200 bg-white-200 dark:border-gray-700',
                     ])
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'html' => 'HTML',
                         'css' => 'CSS',
                         'javascript' => 'JavaScript',
@@ -177,7 +184,7 @@ class AllRepeatedResource extends Resource
                         'mysql' => 'MySQL',
                         default => $state,
                     })
-                    ->color(fn ($state) => match ($state) {
+                    ->color(fn($state) => match ($state) {
                         'html' => 'success',
                         'css' => 'danger',
                         'javascript' => 'warning',
@@ -205,24 +212,32 @@ class AllRepeatedResource extends Resource
                     ->default('لايوجد محاضر مطلوب'),
                 Tables\Columns\TextColumn::make('repeat_status')
                     ->label('حالة الإعادة')
-                    ->badge(fn ($state) => match ($state) {
+                    ->badge(fn($state) => match ($state) {
                         'waiting' => 'warning',
                         'accepted' => 'تم اضافته',
                     })
-                    ->color(fn ($state) => match ($state) {
+                    ->color(fn($state) => match ($state) {
                         'waiting' => 'warning',
                         'accepted' => 'success',
                         default => 'default',
                     })
-                    ->icon(fn ($state) => match ($state) {
+                    ->icon(fn($state) => match ($state) {
                         'waiting' => 'heroicon-o-clock',
                         'accepted' => 'heroicon-o-check-circle',
                     })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'waiting' => 'في الإنتظار',
                         'accepted' => 'تم الإنضمام لجروب',
                         default => $state,
                     }),
+                Tables\Columns\TextColumn::make('branch.name')
+                    ->label('الفرع')
+                    ->toggleable()
+                    ->weight(FontWeight::Medium)
+                    ->extraAttributes([
+                        'style' => 'text-transform:capitalize'
+                    ])
+                    ->visible(fn() => Auth::check() && is_null(Auth::user()->branch_id)),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('track_start')
@@ -247,7 +262,7 @@ class AllRepeatedResource extends Resource
                     ->label('الفرع')
                     ->native(false)
                     ->relationship('branch', 'name')
-                    ->visible(fn () => Auth::check() && is_null(Auth::user()->branch_id)),
+                    ->visible(fn() => Auth::check() && is_null(Auth::user()->branch_id)),
             ], layout: FiltersLayout::AboveContent)
 
             ->actions([

@@ -59,14 +59,14 @@ class OldStudentResource extends Resource
                     $livewire->validateOnly($component->getStatePath());
                 }),
             Forms\Components\Select::make('training_group_id')
-                ->required(fn (callable $get) => $get('training_group_id') !== null)
+                ->required(fn(callable $get) => $get('training_group_id') !== null)
                 ->label('مجموعة التدريب')
                 ->searchable()
                 ->options(
                     TrainingGroup::when(
                         Auth::check() && Auth::user()->branch_id,
-                        fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                        fn ($query) => $query // else show all groups
+                        fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                        fn($query) => $query // else show all groups
                     )
                         ->limit(6)
                         ->pluck('name', 'id')
@@ -81,7 +81,7 @@ class OldStudentResource extends Resource
                 ])
                 ->inputMode('tel')
                 ->helperText('يجب أن يكون الرقم مكون من 11 رقم')
-                ->rules('required|phone:'.config('app.PHONE_COUNTRIES'))
+                ->rules('required|phone:' . config('app.PHONE_COUNTRIES'))
                 ->live()
                 ->afterStateUpdated(function ($livewire, $component) {
                     // live validation
@@ -94,8 +94,8 @@ class OldStudentResource extends Resource
                 ->options(
                     Group::when(
                         Auth::check() && Auth::user()->branch_id,
-                        fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                        fn ($query) => $query // else show all groups
+                        fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                        fn($query) => $query // else show all groups
                     )
                         ->pluck('name', 'id')
                 ),
@@ -142,7 +142,7 @@ class OldStudentResource extends Resource
         return $table
             // show only the branch stuff to the employee
             ->modifyQueryUsing(
-                fn (Builder $query) => $query->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
+                fn(Builder $query) => $query->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                     $query->where('branch_id', Auth::user()->branch_id);
                 })
                     ->withCount('comments'),
@@ -171,6 +171,19 @@ class OldStudentResource extends Resource
                     ->searchable()
                     ->copyable()
                     ->copyMessage('تم نسخ الرقم'),
+                Tables\Columns\TextColumn::make('start')
+                    ->label('ملاحظات البداية')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'directly' => 'success',
+                        'delay' => 'warning',
+                    })
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'directly' => 'مـبـاشـر',
+                        'delay' => 'تـأجـيـل',
+                        default => $state,
+                    }),
                 Tables\Columns\TextColumn::make('group.end_date')
                     ->label('تاريخ الانتهاء')
                     ->sortable(),
@@ -179,6 +192,19 @@ class OldStudentResource extends Resource
                     ->default('لم يتدرب بعد')
                     ->badge()
                     ->weight(FontWeight::SemiBold),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('الحالة')
+                    ->badge()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->color(fn(string $state): string => match ($state) {
+                        'normal' => 'success',
+                        'important' => 'danger',
+                    })
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'normal' => 'عـادي',
+                        'important' => 'مـسـتـعـجـل',
+                        default => $state,
+                    }),
                 Tables\Columns\IconColumn::make('has_certificate')
                     ->label('الشهادة')
                     ->boolean()
@@ -226,11 +252,20 @@ class OldStudentResource extends Resource
                                 ->send();
                         }
                     }),
+                Tables\Columns\TextColumn::make('branch.name')
+                    ->label('الفرع')
+                    ->toggleable()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->weight(FontWeight::Medium)
+                    ->extraAttributes([
+                        'style' => 'text-transform:capitalize'
+                    ])
+                    ->visible(fn() => Auth::check() && is_null(Auth::user()->branch_id)),
 
             ])
             ->filters([
                 Filter::make('training_group_id')
-                    ->query(fn (Builder $query): Builder => $query->whereNull('training_group_id'))
+                    ->query(fn(Builder $query): Builder => $query->whereNull('training_group_id'))
                     ->toggle()
                     ->label('الغير متدربين')
                     ->columnSpanFull(),
@@ -247,8 +282,8 @@ class OldStudentResource extends Resource
                     ->options(
                         Group::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn ($query) => $query // else show all groups
+                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn($query) => $query // else show all groups
                         )
                             ->pluck('name', 'id')
 
@@ -260,8 +295,8 @@ class OldStudentResource extends Resource
                     ->options(
                         TrainingGroup::when(
                             Auth::check() && Auth::user()->branch_id,
-                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                            fn ($query) => $query // else show all groups
+                            fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                            fn($query) => $query // else show all groups
                         )
                             ->whereStatus('active')
                             ->orderBy('start_date', 'desc')
@@ -273,11 +308,11 @@ class OldStudentResource extends Resource
                     ->label('الفرع')
                     ->native(false)
                     ->relationship('branch', 'name')
-                    ->visible(fn () => Auth::check() && is_null(Auth::user()->branch_id)),
+                    ->visible(fn() => Auth::check() && is_null(Auth::user()->branch_id)),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormColumns(2)
             ->filtersTriggerAction(
-                fn (Action $action) => $action
+                fn(Action $action) => $action
                     ->button()
                     ->label('الفلاتر'),
             )

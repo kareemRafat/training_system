@@ -179,6 +179,15 @@ class StudentResource extends Resource
                         'delay' => 'تـأجـيـل',
                         default => $state,
                     }),
+                Tables\Columns\TextColumn::make('group.name')
+                    ->label('المجموعة')
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->weight(FontWeight::Medium)
+                    ->extraAttributes([
+                        'style' => 'text-transform:capitalize'
+                    ]),
+
+
                 Tables\Columns\TextColumn::make('group.end_date')
                     ->label('تاريخ الانتهاء')
                     ->sortable(),
@@ -194,6 +203,14 @@ class StudentResource extends Resource
                         'important' => 'مـسـتـعـجـل',
                         default => $state,
                     }),
+                Tables\Columns\TextColumn::make('branch.name')
+                    ->label('الفرع')
+                    ->toggleable()
+                    ->weight(FontWeight::Medium)
+                    ->extraAttributes([
+                        'style' => 'text-transform:capitalize'
+                    ])
+                    ->visible(fn() => Auth::check() && is_null(Auth::user()->branch_id)),
             ])
 
             ->filters([
