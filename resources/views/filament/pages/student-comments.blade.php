@@ -43,7 +43,6 @@
             </div>
         @empty
             <div class="text-center py-12 text-gray-500 dark:text-gray-400">
-                <x-heroicon-o-chat-bubble-left-ellipsis class="mx-auto h-12 w-12 dark:text-gray-300"/>
                 <p class="mt-2">لا توجد تعليقات بعد</p>
             </div>
         @endforelse
