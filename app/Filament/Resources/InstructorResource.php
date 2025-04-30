@@ -2,20 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Actions\NormalActions\InstructorActions\DisableInstructorAction;
+use App\Filament\Resources\InstructorResource\Pages;
 use App\Models\Branch;
-use Filament\Forms\Form;
 use App\Models\Instructor;
-use Filament\Tables\Table;
+use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
-use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Auth\Access\AuthorizationException;
-use App\Filament\Resources\InstructorResource\Pages;
-use App\Filament\Actions\NormalActions\InstructorActions\DisableInstructorAction;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class InstructorResource extends Resource
 {
@@ -62,7 +62,7 @@ class InstructorResource extends Resource
         return $table
             // show only the branch stuff to the employee
             ->modifyQueryUsing(
-                fn(Builder $query) => $query
+                fn (Builder $query) => $query
                     ->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                         $query->where('branch_id', Auth::user()->branch_id);
                     })
@@ -124,9 +124,10 @@ class InstructorResource extends Resource
     public static function canViewAny(): bool
     {
 
-        if (!Auth::check() || Auth::user()->branch_id) {
+        if (! Auth::check() || Auth::user()->branch_id) {
             throw new AuthorizationException("You don't have permission to view this.");
         }
-        return  true;
+
+        return true;
     }
 }

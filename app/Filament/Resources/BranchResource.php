@@ -2,15 +2,15 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Branch;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
 use App\Filament\Resources\BranchResource\Pages;
+use App\Models\Branch;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Auth;
 
 class BranchResource extends Resource
 {
@@ -110,9 +110,10 @@ class BranchResource extends Resource
     public static function canViewAny(): bool
     {
 
-        if (!Auth::check() || Auth::user()->branch_id) {
+        if (! Auth::check() || Auth::user()->branch_id) {
             throw new AuthorizationException("You don't have permission to view this.");
         }
-        return  true;
+
+        return true;
     }
 }
