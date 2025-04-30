@@ -46,6 +46,8 @@ class OldStudentResource extends Resource
 
     protected static ?int $navigationSort = 4; // Position in sidebar
 
+    protected static ?string $slug = 'all-students';
+
     public static function form(Form $form): Form
     {
         return $form->schema([
