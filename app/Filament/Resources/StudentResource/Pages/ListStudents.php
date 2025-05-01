@@ -15,6 +15,7 @@ class ListStudents extends ListRecords
     {
         return [
             Actions\CreateAction::make()
+                ->slideOver()
                 ->createAnother(false)
                 ->closeModalByClickingAway(false)
                 ->mutateFormDataUsing(function (array $data): array {

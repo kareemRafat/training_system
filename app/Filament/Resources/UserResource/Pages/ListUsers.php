@@ -15,6 +15,7 @@ class ListUsers extends ListRecords
     {
         return [
             Actions\CreateAction::make()
+                ->slideOver()
                 ->createAnother(false)
                 ->mutateFormDataUsing(function (array $data): array {
                     $data['created_at'] = now();
