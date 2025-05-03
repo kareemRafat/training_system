@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Actions\NormalActions;
+namespace App\Filament\Actions\NormalActions\StudentActions;
 
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;

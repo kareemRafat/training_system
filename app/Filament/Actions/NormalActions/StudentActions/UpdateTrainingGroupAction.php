@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Actions\NormalActions;
+namespace App\Filament\Actions\NormalActions\StudentActions;
 
 use App\Models\TrainingGroup;
 use Filament\Forms\Components\Select;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Actions\NormalActions;
+namespace App\Filament\Actions\NormalActions\StudentActions;
 
 use App\Filament\Resources\StudentResource\Pages\AddStudents;
 use Filament\Actions\Action;

@@ -21,10 +21,10 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Actions\NormalActions\AddCommentAction;
 use App\Filament\Actions\NormalActions\ShowCommentAction;
-use App\Filament\Actions\NormalActions\UpdateStatusAction;
 use App\Filament\Actions\BulkActions\UpdateStatusBulkAction;
-use App\Filament\Actions\NormalActions\UpdateTrainingGroupAction;
+use App\Filament\Actions\NormalActions\StudentActions\UpdateTrainingGroupAction;
 use App\Filament\Actions\BulkActions\UpdateTrainingGroupBulkAction;
+use App\Filament\Actions\NormalActions\StudentActions\UpdateStatusAction;
 
 class StudentResource extends Resource
 {

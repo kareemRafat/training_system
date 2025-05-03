@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\StudentResource\Pages;
 
-use App\Filament\Actions\NormalActions\AddStudentsAction;
+use App\Filament\Actions\NormalActions\StudentActions\AddStudentsAction;
 use App\Filament\Resources\StudentResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
