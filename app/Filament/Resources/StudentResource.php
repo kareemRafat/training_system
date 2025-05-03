@@ -2,28 +2,29 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Actions\BulkActions\UpdateStatusBulkAction;
-use App\Filament\Actions\BulkActions\UpdateTrainingGroupBulkAction;
-use App\Filament\Actions\NormalActions\AddCommentAction;
-use App\Filament\Actions\NormalActions\ShowCommentAction;
-use App\Filament\Actions\NormalActions\UpdateTrainingGroupAction;
-use App\Filament\Resources\StudentResource\Pages;
+use Filament\Forms;
+use Filament\Tables;
 use App\Models\Group;
 use App\Models\Student;
-use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
+use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
-use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
+use App\Filament\Resources\StudentResource\Pages;
+use App\Filament\Actions\NormalActions\AddCommentAction;
+use App\Filament\Actions\NormalActions\ShowCommentAction;
+use App\Filament\Actions\NormalActions\UpdateStatusAction;
+use App\Filament\Actions\BulkActions\UpdateStatusBulkAction;
+use App\Filament\Actions\NormalActions\UpdateTrainingGroupAction;
+use App\Filament\Actions\BulkActions\UpdateTrainingGroupBulkAction;
 
 class StudentResource extends Resource
 {
@@ -253,6 +254,7 @@ class StudentResource extends Resource
 
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
+                    UpdateStatusAction::make('UpdateStatus'),
                     UpdateTrainingGroupAction::make('UpdateTrainingGroup'),
                 ])
                     ->tooltip('الإجراءات')
