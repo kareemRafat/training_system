@@ -2,22 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use App\Models\User;
-use Filament\Tables;
+use App\Filament\Actions\NormalActions\UserActions\DisableUserAction;
+use App\Filament\Resources\UserResource\Pages;
 use App\Models\Branch;
-use Filament\Forms\Get;
+use App\Models\User;
+use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\UserResource\Pages;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Auth\Access\AuthorizationException;
-use App\Filament\Actions\NormalActions\UserActions\DisableUserAction;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends Resource
 {
@@ -54,8 +54,8 @@ class UserResource extends Resource
                     ->required()
                     ->rules('required')
                     // convert to lowercase
-                    ->afterStateHydrated(fn($component, $state) => $component->state(strtolower($state)))
-                    ->dehydrateStateUsing(fn($state) => strtolower($state))
+                    ->afterStateHydrated(fn ($component, $state) => $component->state(strtolower($state)))
+                    ->dehydrateStateUsing(fn ($state) => strtolower($state))
                     ->live()
                     ->afterStateUpdated(function ($livewire, $component) {
                         // live validation
@@ -69,7 +69,7 @@ class UserResource extends Resource
                             return 'فى حالة عدم الرغبة فى تعديل الباسورد يرجى ترك الحقل فارغاً';
                         }
                     })
-                    ->required(fn($component) => ! $component->getModelInstance()->exists)
+                    ->required(fn ($component) => ! $component->getModelInstance()->exists)
                     ->revealable()
                     ->rules(function ($component) {
                         return $component->getModelInstance()->exists
@@ -77,11 +77,11 @@ class UserResource extends Resource
                             : ['confirmed'];
                     })
                     // Prevent empty values from being sent
-                    ->dehydrated(fn($state) => filled($state)),
+                    ->dehydrated(fn ($state) => filled($state)),
                 Forms\Components\TextInput::make('password_confirmation')
                     ->label('تـاكـيد الـباسورد')
                     ->password()
-                    ->required(fn($component) => ! $component->getModelInstance()->exists)
+                    ->required(fn ($component) => ! $component->getModelInstance()->exists)
                     ->revealable()
                     ->rules(function ($component) {
                         // Apply 'required_if' only during updates
@@ -104,17 +104,16 @@ class UserResource extends Resource
                         return empty($get('branch_id'))
                             ? \App\Enums\RoleEnums::ADMIN->value
                             : \App\Enums\RoleEnums::AGENT->value;
-                    })
+                    }),
             ]);
     }
-
 
     public static function table(Table $table): Table
     {
         return $table
             ->modifyQueryUsing(
                 // show all people except kareem
-                fn(Builder $query) => $query->whereNot('role', \App\Enums\RoleEnums::superAdminValue())
+                fn (Builder $query) => $query->whereNot('role', \App\Enums\RoleEnums::superAdminValue())
             )
             ->recordAction(null) // prevent clickable row
             ->striped()
@@ -142,7 +141,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->disabled(fn(Model $record): bool => $record->id == Auth::user()->id),
+                    ->disabled(fn (Model $record): bool => $record->id == Auth::user()->id),
                 DisableUserAction::make(),
             ])
             ->bulkActions([

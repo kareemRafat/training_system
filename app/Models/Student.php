@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    use HasFactory , UserActivityLogs ;
+    use HasFactory , UserActivityLogs;
 
     public $timestamps = false;
 

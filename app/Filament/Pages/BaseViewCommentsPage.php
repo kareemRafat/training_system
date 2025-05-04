@@ -3,11 +3,11 @@
 namespace App\Filament\Pages;
 
 use Filament\Actions;
-use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Auth;
 
 class BaseViewCommentsPage extends ViewRecord
 {
@@ -69,8 +69,8 @@ class BaseViewCommentsPage extends ViewRecord
     public static function canAccess(array $parameters = []): bool
     {
 
-        if (! Auth::check() ) {
-            return false ;
+        if (! Auth::check()) {
+            return false;
         }
 
         // if admin can show all comments
@@ -80,12 +80,12 @@ class BaseViewCommentsPage extends ViewRecord
 
         // To get the branch id for the user i want to show his comments
         $userBranchId = static::getResource()::getModel()::find(request()->route('record'))->branch->id;
-        
-        if (Auth::user()->branch_id !== $userBranchId){
-                throw new AuthorizationException("You don't have permission to view this.");
+
+        if (Auth::user()->branch_id !== $userBranchId) {
+            throw new AuthorizationException("You don't have permission to view this.");
         }
 
-        return true ;
+        return true;
 
     }
 }

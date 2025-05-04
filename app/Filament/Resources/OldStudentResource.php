@@ -2,31 +2,31 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Actions\BulkActions\RecievedCertificateBulkAction;
+use App\Filament\Actions\NormalActions\AddCommentAction;
+use App\Filament\Actions\NormalActions\ShowCommentAction;
+use App\Filament\Actions\NormalActions\StudentActions\RemoveFromTrainingAction;
+use App\Filament\Actions\NormalActions\StudentActions\UpdateTrainingGroupAction;
+use App\Filament\Resources\OldStudentResource\Pages;
 use App\Models\Group;
 use App\Models\Student;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
 use App\Models\TrainingGroup;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Filters\Filter;
-use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
-use Filament\Notifications\Notification;
+use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\OldStudentResource\Pages;
-use App\Filament\Actions\NormalActions\AddCommentAction;
-use App\Filament\Actions\NormalActions\ShowCommentAction;
-use App\Filament\Actions\NormalActions\StudentActions\UpdateTrainingGroupAction;
-use App\Filament\Actions\BulkActions\RecievedCertificateBulkAction;
-use App\Filament\Actions\NormalActions\StudentActions\RemoveFromTrainingAction;
+use Illuminate\Support\Facades\Auth;
 
 class OldStudentResource extends Resource
 {

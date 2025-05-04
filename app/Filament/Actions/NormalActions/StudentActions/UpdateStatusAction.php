@@ -21,13 +21,13 @@ class UpdateStatusAction extends Action
 
                 // ✅ Show success notification
                 Notification::make()
-                    ->title('تم تغيير الحالة الى متسعجل للطالب : ' . $record->name)
+                    ->title('تم تغيير الحالة الى متسعجل للطالب : '.$record->name)
                     ->success()
                     ->send();
             })
             ->requiresConfirmation()
             ->color('danger')
-            ->modalHeading(fn (Model $record): string => 'تغيير الحالة الى مستعجل للطالب : ' . $record->name)
+            ->modalHeading(fn (Model $record): string => 'تغيير الحالة الى مستعجل للطالب : '.$record->name)
             ->modalSubmitActionLabel('تأكيد')
             ->icon('heroicon-s-rocket-launch')
             ->modalSubmitActionLabel('تحديث')

@@ -2,27 +2,27 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\NormalActions\AddCommentAction;
+use App\Filament\Actions\NormalActions\RepeatStudentsActions\RepeatAccepted;
+use App\Filament\Actions\NormalActions\ShowCommentAction;
+use App\Filament\Resources\RepeatedStudentResource\Pages;
+use App\Models\Branch;
+use App\Models\Group;
+use App\Models\Instructor;
+use App\Models\RepeatedStudent;
 use Carbon\Carbon;
 use Filament\Forms;
-use Filament\Tables;
-use App\Models\Group;
-use App\Models\Branch;
 use Filament\Forms\Form;
-use App\Models\Instructor;
-use Filament\Tables\Table;
-use App\Models\RepeatedStudent;
 use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
+use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Actions\NormalActions\AddCommentAction;
-use App\Filament\Actions\NormalActions\ShowCommentAction;
-use App\Filament\Resources\RepeatedStudentResource\Pages;
-use App\Filament\Actions\NormalActions\RepeatStudentsActions\RepeatAccepted;
+use Illuminate\Support\Facades\Auth;
 
 class RepeatedStudentResource extends Resource
 {
@@ -59,7 +59,7 @@ class RepeatedStudentResource extends Resource
                     ->label('رقم الهاتف')
                     ->unique(ignoreRecord: true)
                     ->required()
-                    ->rules('required|phone:' . config('app.PHONE_COUNTRIES'))
+                    ->rules('required|phone:'.config('app.PHONE_COUNTRIES'))
                     ->live()
                     ->afterStateUpdated(function ($livewire, $component) {
                         // live validation
@@ -91,7 +91,7 @@ class RepeatedStudentResource extends Resource
                         )
                             ->pluck('name', 'id')
                     )
-                    ->default(fn() => Auth::user()->branch_id),
+                    ->default(fn () => Auth::user()->branch_id),
                 Forms\Components\Select::make('group_id')
                     ->label('المجموعة السابقة')
                     ->native(false)
@@ -125,6 +125,7 @@ class RepeatedStudentResource extends Resource
                     ->getOptionLabelUsing(function ($value) {
                         // When Update Get the name of the selected instructor, even if inactive
                         $instructor = Instructor::find($value);
+
                         return $instructor->active
                             ? $instructor->name
                             : "المحاضر {$instructor->name} غير متاح";
@@ -154,7 +155,7 @@ class RepeatedStudentResource extends Resource
     {
         return $table
             ->modifyQueryUsing(
-                fn(Builder $query) => $query
+                fn (Builder $query) => $query
                     ->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                         $query->where('branch_id', Auth::user()->branch_id);
                     })
@@ -193,7 +194,7 @@ class RepeatedStudentResource extends Resource
                         'style' => 'padding: 6px 8px; border-radius: 6px;width:fit-content;',
                         'class' => 'border border-[#f1d9d9] dark:bg-gray-200 bg-white-200 dark:border-gray-700',
                     ])
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
                         'html' => 'HTML',
                         'css' => 'CSS',
                         'javascript' => 'JavaScript',
@@ -202,7 +203,7 @@ class RepeatedStudentResource extends Resource
                         'mysql' => 'MySQL',
                         default => $state,
                     })
-                    ->color(fn($state) => match ($state) {
+                    ->color(fn ($state) => match ($state) {
                         'html' => 'success',
                         'css' => 'danger',
                         'javascript' => 'warning',
@@ -244,7 +245,7 @@ class RepeatedStudentResource extends Resource
                     ->extraAttributes([
                         'style' => 'text-transform:capitalize',
                     ])
-                    ->visible(fn() => Auth::check() && is_null(Auth::user()->branch_id)),
+                    ->visible(fn () => Auth::check() && is_null(Auth::user()->branch_id)),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('track_start')
@@ -264,7 +265,7 @@ class RepeatedStudentResource extends Resource
                     ->relationship(
                         'instructor',
                         'name',
-                        fn(Builder $query) => $query->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
+                        fn (Builder $query) => $query->when(Auth::check() && Auth::user()->branch_id, function (Builder $query) {
                             $query
                                 ->where('branch_id', Auth::user()->branch_id);
                         })->whereActive(true)
@@ -273,7 +274,7 @@ class RepeatedStudentResource extends Resource
                     ->label('الفرع')
                     ->native(false)
                     ->relationship('branch', 'name')
-                    ->visible(fn() => Auth::check() && is_null(Auth::user()->branch_id)),
+                    ->visible(fn () => Auth::check() && is_null(Auth::user()->branch_id)),
             ], layout: FiltersLayout::AboveContent)
 
             ->actions([

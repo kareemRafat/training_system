@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Models\ActivityLog;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 trait UserActivityLogs
@@ -25,13 +24,22 @@ trait UserActivityLogs
 
     public function logActivity($action)
     {
+
+        $changedFields = $this->getChanges();
+
+        $originals = collect($changedFields)->mapWithKeys(function ($newValue, $key) {
+            return [$key => $this->getOriginal($key)];
+        });
+
         if (Auth::check()) {
             $this->activityLogs()->create([
                 'user_id' => Auth::id(),
                 'action' => $action,
-                'changes' => json_encode($this->getChanges()),
+                'changes' => json_encode([
+                    'original' => $originals,
+                    'updated' => $this->getChanges(),
+                ]),
             ]);
-
         }
     }
 
