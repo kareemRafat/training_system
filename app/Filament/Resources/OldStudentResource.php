@@ -2,31 +2,32 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Actions\BulkActions\RecievedCertificateBulkAction;
-use App\Filament\Actions\NormalActions\AddCommentAction;
-use App\Filament\Actions\NormalActions\ShowCommentAction;
-use App\Filament\Actions\NormalActions\StudentActions\RemoveFromTrainingAction;
-use App\Filament\Actions\NormalActions\StudentActions\UpdateTrainingGroupAction;
-use App\Filament\Resources\OldStudentResource\Pages;
+use Filament\Forms;
+use Filament\Tables;
 use App\Models\Group;
 use App\Models\Student;
-use App\Models\TrainingGroup;
-use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Notifications\Notification;
+use Filament\Tables\Table;
+use App\Models\TrainingGroup;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Filters\Filter;
+use Illuminate\Support\Facades\Auth;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
-use Filament\Tables;
-use Filament\Tables\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
+use App\Filament\Resources\OldStudentResource\Pages;
+use App\Filament\Actions\NormalActions\ViewActivityLog;
+use App\Filament\Actions\NormalActions\AddCommentAction;
+use App\Filament\Actions\NormalActions\ShowCommentAction;
+use App\Filament\Actions\BulkActions\RecievedCertificateBulkAction;
+use App\Filament\Actions\NormalActions\StudentActions\RemoveFromTrainingAction;
+use App\Filament\Actions\NormalActions\StudentActions\UpdateTrainingGroupAction;
 
 class OldStudentResource extends Resource
 {
@@ -329,6 +330,7 @@ class OldStudentResource extends Resource
 
                     // remove from training_group if there is a training_group
                     RemoveFromTrainingAction::make('removeFromTraining'),
+                    ViewActivityLog::make('viewActivityLog'),
 
                     // add to training_group if there is not training_group
                     UpdateTrainingGroupAction::make('UpdateTrainingGroup'),

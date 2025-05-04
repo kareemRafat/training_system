@@ -35,10 +35,10 @@ trait UserActivityLogs
             $this->activityLogs()->create([
                 'user_id' => Auth::id(),
                 'action' => $action,
-                'changes' => json_encode([
+                'changes' => [
                     'original' => $originals,
                     'updated' => $this->getChanges(),
-                ]),
+                ],
             ]);
         }
     }
