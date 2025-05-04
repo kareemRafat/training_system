@@ -100,11 +100,11 @@ class UserResource extends Resource
                     ->placeholder('مسئول الفروع')
                     ->helperText('فى حالة مسئول الفروع يرجى ترك الحقل فارغاً'),
                 Forms\Components\Hidden::make('role')
-                ->dehydrateStateUsing(function (Get $get) {
-                    return empty($get('branch_id'))
-                        ? \App\Enums\RoleEnums::ADMIN->value
-                        : \App\Enums\RoleEnums::AGENT->value;
-                })
+                    ->dehydrateStateUsing(function (Get $get) {
+                        return empty($get('branch_id'))
+                            ? \App\Enums\RoleEnums::ADMIN->value
+                            : \App\Enums\RoleEnums::AGENT->value;
+                    })
             ]);
     }
 

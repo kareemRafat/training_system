@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\UserActivityLogs;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class RepeatedStudent extends Model
 {
     /** @use HasFactory<\Database\Factories\RepeatedSutdentFactory> */
-    use HasFactory;
+    use HasFactory , UserActivityLogs;
 
     public $timestamps = false;
 

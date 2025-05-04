@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\UserActivityLogs;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    use HasFactory;
+    use HasFactory , UserActivityLogs ;
 
     public $timestamps = false;
 
