@@ -29,8 +29,8 @@
         body {
             line-height: 1.5;
             min-height: 100vh;
-            font-family: "Outfit", sans-serif;
-            padding-bottom: 20vh;
+            /* font-family: "Outfit", sans-serif; */
+            /* padding-bottom: 20vh; */
         }
 
         button,
@@ -287,7 +287,7 @@
                     </i>
                     <span>
                         <a href="#">{{ $activity->user->name }}</a>
-                        قام 
+                        قام
                         @if ($activity->action == 'إنشاء')
 
                             <b style="color:lightseagreen">إضافة </b>
