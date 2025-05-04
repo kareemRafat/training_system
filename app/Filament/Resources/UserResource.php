@@ -53,6 +53,7 @@ class UserResource extends Resource
                     ->label('إسم الدخول باللغة الإنجليزية')
                     ->required()
                     ->rules('required')
+                    ->unique(ignoreRecord: true)
                     // convert to lowercase
                     ->afterStateHydrated(fn ($component, $state) => $component->state(strtolower($state)))
                     ->dehydrateStateUsing(fn ($state) => strtolower($state))
