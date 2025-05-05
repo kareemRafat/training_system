@@ -2,11 +2,12 @@
 
 namespace App\Filament\Actions\NormalActions;
 
-use Filament\Forms\Components\Textarea;
-use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\DB;
 use Filament\Tables\Actions\Action;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Textarea;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class AddCommentAction extends Action
 {
@@ -34,12 +35,31 @@ class AddCommentAction extends Action
 
     public function update(Model $record, $data): void
     {
-        // ✅ Add the comment using Eloquent model and relation
-        $record->comments()->create([
-            'comment' => $data['comment'],
-            'user_id' => Auth::user()->id,
-            'created_at' => $data['created_at'], // Pass the client time from the form
-        ]);
+
+
+        // Use a database transaction to ensure data consistency
+        DB::transaction(function () use ($record, $data) {
+
+            // ✅ Add the comment using Eloquent model and relation
+            $comment = $record->comments()->create([
+                'comment' => $data['comment'],
+                'user_id' => Auth::user()->id,
+                'created_at' => $data['created_at'], // Pass the client time from the form
+            ]);
+
+            // Log the activity
+            $record->activityLogs()->create([
+                'action' => 'اضافة تعليق',
+                'changes' => [
+                    'original' => '',
+                    'updated' => [
+                        'new_comment' => $comment->toArray(), // Include the new comment details
+                    ],
+                ],
+                'user_id' => Auth::user()->id,
+                'created_at' => $data['created_at'],
+            ]);
+        });
 
         // ✅ Show success notification
         Notification::make()
