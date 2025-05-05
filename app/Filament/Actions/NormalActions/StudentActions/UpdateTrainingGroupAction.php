@@ -3,11 +3,12 @@
 namespace App\Filament\Actions\NormalActions\StudentActions;
 
 use App\Models\TrainingGroup;
-use Filament\Forms\Components\Select;
-use Filament\Notifications\Notification;
+use App\Traits\AddActivityLogs;
 use Filament\Tables\Actions\Action;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Select;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class UpdateTrainingGroupAction extends Action
 {
@@ -20,11 +21,24 @@ class UpdateTrainingGroupAction extends Action
             ->modalHeading('اضف الى جروب التدريب')
             ->modalSubmitActionLabel('تأكيد')
             // ✅ Show only if training_group_id is NOT NULL
-            ->visible(fn (Model $record) => is_null($record->training_group_id))
-            ->action(fn (Model $record, $data) => $record->update([
-                'training_group_id' => $data['training_group_id'],
-                'training_joined_at' => now(config('app.timezone'))->toDateTimeString(),
-            ]))
+            ->visible(fn(Model $record) => is_null($record->training_group_id))
+            ->action(function (Model $record, $data) {
+                $record->update([
+                    'training_group_id' => $data['training_group_id'],
+                    'training_joined_at' => now(config('app.timezone'))->toDateTimeString(),
+                ]);
+
+                // ✅ add update trainging group to activity logs
+                AddActivityLogs::Add(
+                    event : 'training_group',
+                    action : 'اضافة الى جروب التدريب',
+                    value : 'تم الاضافة الى جروب التدريب',
+                    record : $record,
+                    data: $data
+                );
+            })
+
+
             ->form([
                 Select::make('training_group_id')
                     ->label('اختر جروب التدريب')
@@ -33,8 +47,8 @@ class UpdateTrainingGroupAction extends Action
                             ->where('status', 'active')
                             ->when(
                                 Auth::check() && Auth::user()->branch_id,
-                                fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                                fn ($query) => $query // else show all groups
+                                fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                                fn($query) => $query // else show all groups
                             )
                             ->limit(5)
                             ->pluck('name', 'id')

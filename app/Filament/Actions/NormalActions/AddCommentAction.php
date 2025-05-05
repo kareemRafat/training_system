@@ -2,6 +2,7 @@
 
 namespace App\Filament\Actions\NormalActions;
 
+use App\Traits\AddActivityLogs;
 use Illuminate\Support\Facades\DB;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,8 @@ use Filament\Notifications\Notification;
 
 class AddCommentAction extends Action
 {
+    use AddActivityLogs;
+
     protected function setUp(): void
     {
         $this
@@ -47,18 +50,14 @@ class AddCommentAction extends Action
                 'created_at' => $data['created_at'], // Pass the client time from the form
             ]);
 
-            // Log the activity
-            $record->activityLogs()->create([
-                'action' => 'اضافة تعليق',
-                'changes' => [
-                    'original' => '',
-                    'updated' => [
-                        'new_comment' => $comment->toArray(), // Include the new comment details
-                    ],
-                ],
-                'user_id' => Auth::user()->id,
-                'created_at' => $data['created_at'],
-            ]);
+            // ✅ Add the comment to the activity logs
+            AddActivityLogs::Add(
+                event: 'comment',
+                action: 'اضافة تعليق',
+                value: $comment->toArray(),
+                record: $record,
+                data: $data
+            );
         });
 
         // ✅ Show success notification

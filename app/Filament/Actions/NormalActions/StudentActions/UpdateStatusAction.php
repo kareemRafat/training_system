@@ -2,9 +2,10 @@
 
 namespace App\Filament\Actions\NormalActions\StudentActions;
 
-use Filament\Notifications\Notification;
+use App\Traits\AddActivityLogs;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 
 class UpdateStatusAction extends Action
 {
@@ -18,6 +19,14 @@ class UpdateStatusAction extends Action
                 $record->update([
                     'status' => 'important',
                 ]);
+
+                // ✅ add status change to activity logs
+                AddActivityLogs::Add(
+                    event : 'status',
+                    action : 'تغيير الحالة الى مستعجل',
+                    value : 'تم تغيير الحالة الى مستعجل',
+                    record : $record,
+                );
 
                 // ✅ Show success notification
                 Notification::make()
