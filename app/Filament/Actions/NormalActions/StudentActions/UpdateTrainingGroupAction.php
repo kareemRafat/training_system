@@ -3,7 +3,6 @@
 namespace App\Filament\Actions\NormalActions\StudentActions;
 
 use App\Models\TrainingGroup;
-use App\Traits\AddActivityLogs;
 use Filament\Tables\Actions\Action;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
@@ -27,17 +26,7 @@ class UpdateTrainingGroupAction extends Action
                     'training_group_id' => $data['training_group_id'],
                     'training_joined_at' => now(config('app.timezone'))->toDateTimeString(),
                 ]);
-
-                // ✅ add update trainging group to activity logs
-                AddActivityLogs::Add(
-                    event: 'training_group',
-                    action: 'اضافة الى جروب التدريب',
-                    value: 'تم الاضافة الى جروب التدريب',
-                    record: $record
-                );
             })
-
-
             ->form([
                 Select::make('training_group_id')
                     ->label('اختر جروب التدريب')

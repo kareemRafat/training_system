@@ -14,6 +14,14 @@ trait UserActivityLogs
         });
 
         static::updated(function ($model) {
+            if ($model->isDirty('training_group_id')) {
+                $model->logActivity('تغير مجموعة التدريب');
+                return ;
+            }
+            if ($model->isDirty('status')) {
+                $model->logActivity('تغير الحالة');
+                return ;
+            }
             $model->logActivity('تعديل');
         });
 

@@ -60,7 +60,7 @@
             flex-direction: column;
             padding: 32px 0 32px 32px;
             border-right: 2px solid var(--c-grey-200);
-            font-size: 1.125rem;
+            font-size: 1rem;
         }
 
         .timeline-item {
