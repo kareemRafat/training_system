@@ -19,11 +19,11 @@ use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\FiltersLayout;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Actions\NormalActions\ViewActivityLog;
 use App\Filament\Actions\NormalActions\AddCommentAction;
 use App\Filament\Actions\NormalActions\ShowCommentAction;
 use App\Filament\Resources\RepeatedStudentResource\Pages;
 use App\Filament\Actions\NormalActions\RepeatStudentsActions\RepeatAccepted;
+use App\Filament\Actions\NormalActions\ViewActivityLogAction;
 
 class RepeatedStudentResource extends Resource
 {
@@ -287,7 +287,7 @@ class RepeatedStudentResource extends Resource
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     RepeatAccepted::make(),
-                    ViewActivityLog::make('viewActivityLog'),
+                    ViewActivityLogAction::make('viewActivityLog'),
                 ])
                     ->tooltip('الإجراءات')
                     ->label('المزيد')

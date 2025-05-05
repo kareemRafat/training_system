@@ -16,7 +16,6 @@ use Filament\Support\Enums\FontFamily;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\FiltersLayout;
-use App\Filament\Actions\NormalActions\ViewActivityLog;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\StudentResource\Pages;
@@ -26,6 +25,7 @@ use App\Filament\Actions\BulkActions\UpdateStatusBulkAction;
 use App\Filament\Actions\BulkActions\UpdateTrainingGroupBulkAction;
 use App\Filament\Actions\NormalActions\StudentActions\UpdateStatusAction;
 use App\Filament\Actions\NormalActions\StudentActions\UpdateTrainingGroupAction;
+use App\Filament\Actions\NormalActions\ViewActivityLogAction;
 
 class StudentResource extends Resource
 {
@@ -257,7 +257,7 @@ class StudentResource extends Resource
                     Tables\Actions\EditAction::make(),
                     UpdateStatusAction::make('UpdateStatus'),
                     UpdateTrainingGroupAction::make('UpdateTrainingGroup'),
-                    ViewActivityLog::make('viewActivityLog')
+                    ViewActivityLogAction::make('viewActivityLog')
                 ])
                     ->tooltip('الإجراءات')
                     ->label('المزيد')

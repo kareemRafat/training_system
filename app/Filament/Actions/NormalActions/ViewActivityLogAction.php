@@ -5,7 +5,7 @@ namespace App\Filament\Actions\NormalActions;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
 
-class ViewActivityLog extends Action
+class ViewActivityLogAction extends Action
 {
 
     protected function setUp(): void

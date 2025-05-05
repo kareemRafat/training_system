@@ -22,12 +22,12 @@ use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\OldStudentResource\Pages;
-use App\Filament\Actions\NormalActions\ViewActivityLog;
 use App\Filament\Actions\NormalActions\AddCommentAction;
 use App\Filament\Actions\NormalActions\ShowCommentAction;
 use App\Filament\Actions\BulkActions\RecievedCertificateBulkAction;
 use App\Filament\Actions\NormalActions\StudentActions\RemoveFromTrainingAction;
 use App\Filament\Actions\NormalActions\StudentActions\UpdateTrainingGroupAction;
+use App\Filament\Actions\NormalActions\ViewActivityLogAction;
 
 class OldStudentResource extends Resource
 {
@@ -330,7 +330,7 @@ class OldStudentResource extends Resource
 
                     // remove from training_group if there is a training_group
                     RemoveFromTrainingAction::make('removeFromTraining'),
-                    ViewActivityLog::make('viewActivityLog'),
+                    ViewActivityLogAction::make('viewActivityLog'),
 
                     // add to training_group if there is not training_group
                     UpdateTrainingGroupAction::make('UpdateTrainingGroup'),
