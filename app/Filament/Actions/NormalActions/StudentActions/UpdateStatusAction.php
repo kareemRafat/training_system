@@ -2,9 +2,9 @@
 
 namespace App\Filament\Actions\NormalActions\StudentActions;
 
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
-use Filament\Notifications\Notification;
 
 class UpdateStatusAction extends Action
 {
@@ -12,7 +12,7 @@ class UpdateStatusAction extends Action
     {
         $this
             ->label('تغيير الحالة الى مستعجل')
-            ->disabled(fn (Model $record): bool => $record->status === 'important')
+            ->hidden(fn (Model $record): bool => $record->status === 'important')
             ->action(function (Model $record): void {
                 // $data -> form-data ---- $record -> the row need to update
                 $record->update([

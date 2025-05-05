@@ -16,11 +16,13 @@ trait UserActivityLogs
         static::updated(function ($model) {
             if ($model->isDirty('training_group_id')) {
                 $model->logActivity('تغير مجموعة التدريب');
-                return ;
+
+                return;
             }
             if ($model->isDirty('status')) {
                 $model->logActivity('تغير الحالة');
-                return ;
+
+                return;
             }
             $model->logActivity('تعديل');
         });

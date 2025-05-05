@@ -3,12 +3,12 @@
 namespace App\Filament\Actions\NormalActions;
 
 use App\Traits\AddActivityLogs;
-use Illuminate\Support\Facades\DB;
-use Filament\Tables\Actions\Action;
-use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Textarea;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
+use Filament\Tables\Actions\Action;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AddCommentAction extends Action
 {
@@ -38,7 +38,6 @@ class AddCommentAction extends Action
 
     public function update(Model $record, $data): void
     {
-
 
         // Use a database transaction to ensure data consistency
         DB::transaction(function () use ($record, $data) {

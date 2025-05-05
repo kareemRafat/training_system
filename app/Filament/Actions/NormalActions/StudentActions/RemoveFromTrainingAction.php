@@ -2,9 +2,9 @@
 
 namespace App\Filament\Actions\NormalActions\StudentActions;
 
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Model;
-use Filament\Notifications\Notification;
 
 class RemoveFromTrainingAction extends Action
 {
@@ -20,8 +20,8 @@ class RemoveFromTrainingAction extends Action
             ->modalDescription('هل أنت متأكد أنك تريد إلغاء التدريب لهذا الطالب؟')
             ->modalSubmitActionLabel('تأكيد')
             // ✅ Show only if training_group_id is NOT NULL
-            ->visible(fn(Model $record) => ! is_null($record->training_group_id))
-            ->action(fn(Model $record) => $this->remove($record));
+            ->visible(fn (Model $record) => ! is_null($record->training_group_id))
+            ->action(fn (Model $record) => $this->remove($record));
     }
 
     public function remove(Model $record): void

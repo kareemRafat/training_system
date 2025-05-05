@@ -3,11 +3,11 @@
 namespace App\Filament\Actions\NormalActions\StudentActions;
 
 use App\Models\TrainingGroup;
-use Filament\Tables\Actions\Action;
-use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
-use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
+use Filament\Tables\Actions\Action;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateTrainingGroupAction extends Action
 {
@@ -20,7 +20,7 @@ class UpdateTrainingGroupAction extends Action
             ->modalHeading('اضف الى جروب التدريب')
             ->modalSubmitActionLabel('تأكيد')
             // ✅ Show only if training_group_id is NOT NULL
-            ->visible(fn(Model $record) => is_null($record->training_group_id))
+            ->visible(fn (Model $record) => is_null($record->training_group_id))
             ->action(function (Model $record, $data) {
                 $record->update([
                     'training_group_id' => $data['training_group_id'],
@@ -35,8 +35,8 @@ class UpdateTrainingGroupAction extends Action
                             ->where('status', 'active')
                             ->when(
                                 Auth::check() && Auth::user()->branch_id,
-                                fn($query) => $query->where('branch_id', Auth::user()->branch_id),
-                                fn($query) => $query // else show all groups
+                                fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
+                                fn ($query) => $query // else show all groups
                             )
                             ->limit(5)
                             ->pluck('name', 'id')
