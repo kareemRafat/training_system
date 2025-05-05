@@ -2,32 +2,32 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Group;
-use App\Models\Student;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\TrainingGroup;
-use Filament\Resources\Resource;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Filters\Filter;
-use Illuminate\Support\Facades\Auth;
-use Filament\Support\Enums\ActionSize;
-use Filament\Support\Enums\FontFamily;
-use Filament\Support\Enums\FontWeight;
-use Filament\Notifications\Notification;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\OldStudentResource\Pages;
+use App\Filament\Actions\BulkActions\RecievedCertificateBulkAction;
 use App\Filament\Actions\NormalActions\AddCommentAction;
 use App\Filament\Actions\NormalActions\ShowCommentAction;
-use App\Filament\Actions\BulkActions\RecievedCertificateBulkAction;
 use App\Filament\Actions\NormalActions\StudentActions\RemoveFromTrainingAction;
 use App\Filament\Actions\NormalActions\StudentActions\UpdateTrainingGroupAction;
 use App\Filament\Actions\NormalActions\ViewActivityLogAction;
+use App\Filament\Resources\OldStudentResource\Pages;
+use App\Models\Group;
+use App\Models\Student;
+use App\Models\TrainingGroup;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Support\Enums\ActionSize;
+use Filament\Support\Enums\FontFamily;
+use Filament\Support\Enums\FontWeight;
+use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class OldStudentResource extends Resource
 {
@@ -218,42 +218,7 @@ class OldStudentResource extends Resource
                 Tables\Columns\ToggleColumn::make('received_certificate')
                     ->label('الاستلام')
                     ->afterStateUpdated(function ($record, $state) {
-                        $userId = Auth::id(); // Get the current logged-in user ID
-
-                        $comment = $state
-                            ? 'تم استلام الشهادة من الطالب'
-                            : 'حدث خطأ فى تسليم الشهادة للطالب';
-
-                        if (! $record->has_certificate && $state) {
-                            $record->received_certificate = false;
-                            $record->save();
-
-                            Notification::make()
-                                ->title('لا يمكن تسليم الشهادة قبل طباعتها')
-                                ->warning()
-                                ->send();
-
-                            return;
-                        }
-
-                        // Now save the comment — depends where you save it
-                        $record->comments()->create([
-                            'user_id' => $userId,
-                            'comment' => $comment,
-                            'created_at' => now()->setTimezone(config('app.timezone'))->toDateTimeString(),
-                        ]);
-
-                        if ($state) {
-                            Notification::make()
-                                ->title('تم تسليم شهادة التدريب')
-                                ->success()
-                                ->send();
-                        } else {
-                            Notification::make()
-                                ->title('تم تعيين كغير مستلم للشهادة')
-                                ->danger()
-                                ->send();
-                        }
+                        static::graduationProcess($record, $state);
                     }),
                 Tables\Columns\TextColumn::make('branch.name')
                     ->label('الفرع')
@@ -330,11 +295,11 @@ class OldStudentResource extends Resource
 
                     // remove from training_group if there is a training_group
                     RemoveFromTrainingAction::make('removeFromTraining'),
-                    ViewActivityLogAction::make('viewActivityLog'),
 
                     // add to training_group if there is not training_group
                     UpdateTrainingGroupAction::make('UpdateTrainingGroup'),
 
+                    ViewActivityLogAction::make('viewActivityLog'),
                 ])
                     ->tooltip('الإجراءات')
                     ->label('المزيد')
@@ -363,5 +328,45 @@ class OldStudentResource extends Resource
             'view-comments' => Pages\ViewComments::route('/{record}/comments'),
 
         ];
+    }
+
+    private static function graduationProcess($record, $state)
+    {
+        $userId = Auth::id(); // Get the current logged-in user ID
+
+        $comment = $state
+            ? 'تم استلام الشهادة من الطالب'
+            : 'حدث خطأ فى تسليم الشهادة للطالب';
+
+        if (! $record->has_certificate && $state) {
+            $record->received_certificate = false;
+            $record->save();
+
+            Notification::make()
+                ->title('لا يمكن تسليم الشهادة قبل طباعتها')
+                ->warning()
+                ->send();
+
+            return;
+        }
+
+        // Now save the comment — depends where you save it
+        $record->comments()->create([
+            'user_id' => $userId,
+            'comment' => $comment,
+            'created_at' => now()->setTimezone(config('app.timezone'))->toDateTimeString(),
+        ]);
+
+        if ($state) {
+            Notification::make()
+                ->title('تم تسليم شهادة التدريب')
+                ->success()
+                ->send();
+        } else {
+            Notification::make()
+                ->title('تم تعيين كغير مستلم للشهادة')
+                ->danger()
+                ->send();
+        }
     }
 }
