@@ -52,12 +52,7 @@ class StudentResource extends Resource
                     ->label('اسم الطالب')
                     ->columnSpan('full') // Make the input take the whole line
                     ->unique(ignoreRecord: true)
-                    ->rules('required')
-                    ->live()
-                    ->afterStateUpdated(function ($livewire, $component) {
-                        // live validation
-                        $livewire->validateOnly($component->getStatePath());
-                    }),
+                    ->rules('required'),
                 Forms\Components\Select::make('group_id')
                     ->required()
                     ->label('المجموعة')
@@ -89,12 +84,7 @@ class StudentResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->inputMode('tel')
                     ->helperText('يجب أن يكون الرقم مكون من 11 رقم')
-                    ->rules('required|phone:'.config('app.PHONE_COUNTRIES'))
-                    ->live()
-                    ->afterStateUpdated(function ($livewire, $component) {
-                        // live validation
-                        $livewire->validateOnly($component->getStatePath());
-                    }),
+                    ->rules('required|phone:'.config('app.PHONE_COUNTRIES')),
                 Forms\Components\Radio::make('start')
                     ->required()
                     ->label('ملاحظات البداية')
