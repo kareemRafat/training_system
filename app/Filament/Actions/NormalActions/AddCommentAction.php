@@ -55,8 +55,7 @@ class AddCommentAction extends Action
                 event: 'comment',
                 action: 'اضافة تعليق',
                 value: $comment->toArray(),
-                record: $record,
-                data: $data
+                record: $record
             );
         });
 

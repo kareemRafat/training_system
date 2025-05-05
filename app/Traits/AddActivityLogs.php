@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 
 trait AddActivityLogs
 {
-    public static function Add($event , $value , $action , $record , $data = null)
+    public static function Add($event , $value , $action , $record)
     {
         // Log the activity
         $record->activityLogs()->create([
@@ -18,7 +18,7 @@ trait AddActivityLogs
                 ],
             ],
             'user_id' => Auth::user()->id,
-            'created_at' => $data['created_at'] ?? now()->setTimezone(config('app.timezone'))->toDateTimeString(),
+            'created_at' => now()->setTimezone(config('app.timezone'))->toDateTimeString(),
         ]);
     }
 }

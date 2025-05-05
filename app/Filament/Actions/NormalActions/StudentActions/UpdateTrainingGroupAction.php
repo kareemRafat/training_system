@@ -30,11 +30,10 @@ class UpdateTrainingGroupAction extends Action
 
                 // ✅ add update trainging group to activity logs
                 AddActivityLogs::Add(
-                    event : 'training_group',
-                    action : 'اضافة الى جروب التدريب',
-                    value : 'تم الاضافة الى جروب التدريب',
-                    record : $record,
-                    data: $data
+                    event: 'training_group',
+                    action: 'اضافة الى جروب التدريب',
+                    value: 'تم الاضافة الى جروب التدريب',
+                    record: $record
                 );
             })
 
