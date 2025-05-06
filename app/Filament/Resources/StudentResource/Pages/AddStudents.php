@@ -156,7 +156,7 @@ class AddStudents extends Page
         // Process your data here
         foreach ($data['students'] as $student) {
             // Save each student to database
-            $student['created_at'] = now()->timezone(config('app.timezone'));
+            $student['created_at'] = now();
             \App\Models\Student::create($student);
         }
 

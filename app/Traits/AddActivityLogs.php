@@ -18,7 +18,7 @@ trait AddActivityLogs
                 ],
             ],
             'user_id' => Auth::user()->id,
-            'created_at' => now()->setTimezone(config('app.timezone'))->toDateTimeString(),
+            'created_at' => now(),
         ]);
     }
 }

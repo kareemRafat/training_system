@@ -41,6 +41,7 @@ class RecievedCertificateBulkAction extends BulkAction
                     } else {
                         Notification::make()
                             ->title("لا يمكن طباعة شهادة للطالب {$record->name}")
+                            ->body('يجب أن يكون الطالب في مجموعة تدريبية')
                             ->warning()
                             ->seconds(10)
                             ->color('warning')

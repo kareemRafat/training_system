@@ -43,7 +43,7 @@ class BaseViewCommentsPage extends ViewRecord
                     // Example: Save the comment to the database
                     $this->record->comments()->create([
                         'user_id' => Auth::id(),
-                        'created_at' => now()->setTimezone(config('app.timezone'))->toDateTimeString(),
+                        'created_at' => now(),
                         'comment' => $data['comment'],
                     ]);
 

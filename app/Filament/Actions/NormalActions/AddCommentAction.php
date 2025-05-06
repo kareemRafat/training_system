@@ -26,7 +26,7 @@ class AddCommentAction extends Action
             ->action(function (Model $record, $data) {
                 // send timezone with $data
                 $data['created_at'] =
-                    $data['created_at'] ?? now()->setTimezone(config('app.timezone'))->toDateTimeString();
+                    $data['created_at'] ?? now();
                 $this->update($record, $data);
             })
             ->form([

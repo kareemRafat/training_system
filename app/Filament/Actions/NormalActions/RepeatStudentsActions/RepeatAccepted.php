@@ -27,7 +27,7 @@ class RepeatAccepted
                 $record->comments()->create([
                     'comment' => $data['comment'],
                     'user_id' => Auth::id(),
-                    'created_at' => now()->setTimezone(config('app.timezone'))->toDateTimeString(),
+                    'created_at' => now(),
                 ]);
 
                 Notification::make()

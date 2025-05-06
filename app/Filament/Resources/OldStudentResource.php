@@ -344,7 +344,7 @@ class OldStudentResource extends Resource
         $record->comments()->create([
             'user_id' => $userId,
             'comment' => $comment,
-            'created_at' => now()->setTimezone(config('app.timezone'))->toDateTimeString(),
+            'created_at' => now(),
         ]);
 
         if ($state) {
