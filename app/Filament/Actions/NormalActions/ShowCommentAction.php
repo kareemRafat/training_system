@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 class ShowCommentAction extends Action
 {
     // The class name of the resource i use
-    protected string $viewCommentsClass;
+    protected ?string $resource;
 
-    public function viewCommentsClass(string $class): static
+    public function resourceClass(string $class): static
     {
-        $this->viewCommentsClass = $class;
+        $this->resource = $class;
 
         return $this;
     }
@@ -26,23 +26,20 @@ class ShowCommentAction extends Action
             ->extraAttributes(['class' => 'text-xs p-1'])
             ->icon('heroicon-s-chat-bubble-bottom-center')
             ->badge(
-                fn(Model $record) => $record->comments_count > 0
+                fn (Model $record) => $record->comments_count > 0
                     ? $record->comments_count
                     : null
             )
             ->url(function ($record) {
 
-                // Extract the Resource class from the Page's namespace
-                $resourceClass = preg_replace('/\\\Pages\\\.+$/', '', $this->viewCommentsClass);
-
-                return $resourceClass::getUrl(
+                return $this->resource::getUrl(
                     'view-comments',
                     ['record' => $record]
                 );
             })
-            ->disabled(fn(Model $record) => $record->comments_count === 0)
+            ->disabled(fn (Model $record) => $record->comments_count === 0)
             ->button()
             ->size(ActionSize::Small)
-            ->color(fn(Model $record) => $record->comments_count > 0 ? 'rose' : Color::Stone);
+            ->color(fn (Model $record) => $record->comments_count > 0 ? 'rose' : Color::Stone);
     }
 }

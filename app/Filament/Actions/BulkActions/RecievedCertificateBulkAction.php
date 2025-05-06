@@ -3,13 +3,12 @@
 namespace App\Filament\Actions\BulkActions;
 
 use App\Traits\AddActivityLogs;
-use Filament\Tables\Actions\BulkAction;
 use Filament\Notifications\Notification;
+use Filament\Tables\Actions\BulkAction;
 use Illuminate\Database\Eloquent\Collection;
 
 class RecievedCertificateBulkAction extends BulkAction
 {
-
     use AddActivityLogs;
 
     public static function make(?string $name = 'طباعة_شهادة_التدريب'): static

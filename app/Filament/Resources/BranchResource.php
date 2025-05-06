@@ -48,7 +48,7 @@ class BranchResource extends Resource
                     ->required()
                     ->validationMessages([
                         'unique' => 'الإسم مسجل مسبقاً',
-                    ])
+                    ]),
             ]);
     }
 

@@ -265,7 +265,7 @@ class AllRepeatedResource extends Resource
 
                 AddCommentAction::make('AddComment'),
                 ShowCommentAction::make('ShowComment')
-                    ->viewCommentsClass(\App\Filament\Resources\AllRepeatedResource\Pages\ViewComments::class),
+                    ->resourceClass(self::class),
 
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),

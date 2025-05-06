@@ -241,7 +241,7 @@ class StudentResource extends Resource
                 // table row action
                 AddCommentAction::make('AddComment'),
                 ShowCommentAction::make('ShowComment')
-                    ->viewCommentsClass(\App\Filament\Resources\StudentResource\Pages\ViewComments::class),
+                    ->resourceClass(self::class),
 
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),

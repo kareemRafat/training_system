@@ -277,7 +277,7 @@ class RepeatedStudentResource extends Resource
 
                 AddCommentAction::make('AddComment'),
                 ShowCommentAction::make('ShowComment')
-                    ->viewCommentsClass(\App\Filament\Resources\RepeatedStudentResource\Pages\ViewComments::class),
+                    ->resourceClass(self::class),
 
                 ActionGroup::make([
                     Tables\Actions\EditAction::make(),

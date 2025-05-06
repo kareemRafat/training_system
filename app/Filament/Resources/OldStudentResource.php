@@ -276,7 +276,7 @@ class OldStudentResource extends Resource
             ->actions([
                 AddCommentAction::make('AddComment'),
                 ShowCommentAction::make('ShowComment')
-                    ->viewCommentsClass(\App\Filament\Resources\OldStudentResource\Pages\ViewComments::class),
+                    ->resourceClass(self::class),
 
                 // action group
                 ActionGroup::make([
