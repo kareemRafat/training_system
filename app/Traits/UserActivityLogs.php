@@ -24,6 +24,11 @@ trait UserActivityLogs
 
                 return;
             }
+
+            if ($model->isDirty('has_certificate')) {
+
+                return;
+            }
             $model->logActivity('تعديل');
         });
 

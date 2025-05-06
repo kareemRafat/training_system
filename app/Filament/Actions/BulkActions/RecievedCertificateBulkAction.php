@@ -2,12 +2,16 @@
 
 namespace App\Filament\Actions\BulkActions;
 
-use Filament\Notifications\Notification;
+use App\Traits\AddActivityLogs;
 use Filament\Tables\Actions\BulkAction;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Collection;
 
 class RecievedCertificateBulkAction extends BulkAction
 {
+
+    use AddActivityLogs;
+
     public static function make(?string $name = 'طباعة_شهادة_التدريب'): static
     {
         return parent::make($name)
@@ -18,6 +22,14 @@ class RecievedCertificateBulkAction extends BulkAction
                         $record->update([
                             'has_certificate' => true,
                         ]);
+
+                        // ✅ Add the comment to the activity logs
+                        AddActivityLogs::Add(
+                            event: 'certificate',
+                            action: 'طباعة الشهادة',
+                            value: 'تم طباعة الشهادة',
+                            record: $record
+                        );
 
                         // ✅ Show success notification
                         Notification::make()

@@ -43,12 +43,7 @@ class UserResource extends Resource
                     ->label('الإسم بالعربي')
                     ->required()
                     ->rule(['regex:/^[\p{Arabic}\s]+$/u', 'required'])
-                    ->unique(ignoreRecord: true)
-                    ->live()
-                    ->afterStateUpdated(function ($livewire, $component) {
-                        // live validation
-                        $livewire->validateOnly($component->getStatePath());
-                    }),
+                    ->unique(ignoreRecord: true),
                 Forms\Components\TextInput::make('username')
                     ->label('إسم الدخول باللغة الإنجليزية')
                     ->required()
@@ -56,12 +51,7 @@ class UserResource extends Resource
                     ->unique(ignoreRecord: true)
                     // convert to lowercase
                     ->afterStateHydrated(fn ($component, $state) => $component->state(strtolower($state)))
-                    ->dehydrateStateUsing(fn ($state) => strtolower($state))
-                    ->live()
-                    ->afterStateUpdated(function ($livewire, $component) {
-                        // live validation
-                        $livewire->validateOnly($component->getStatePath());
-                    }),
+                    ->dehydrateStateUsing(fn ($state) => strtolower($state)),
                 Forms\Components\TextInput::make('password')
                     ->label('الباسورد')
                     ->password()

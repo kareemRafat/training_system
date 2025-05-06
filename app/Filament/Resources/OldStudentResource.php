@@ -55,12 +55,7 @@ class OldStudentResource extends Resource
             Forms\Components\TextInput::make('name')
                 ->required()
                 ->unique(ignoreRecord: true)
-                ->label('اسم الطالب')
-                ->live()
-                ->afterStateUpdated(function ($livewire, $component) {
-                    // live validation
-                    $livewire->validateOnly($component->getStatePath());
-                }),
+                ->label('اسم الطالب'),
             Forms\Components\Select::make('training_group_id')
                 ->required(fn (callable $get) => $get('training_group_id') !== null)
                 ->label('مجموعة التدريب')
@@ -84,12 +79,7 @@ class OldStudentResource extends Resource
                 ])
                 ->inputMode('tel')
                 ->helperText('يجب أن يكون الرقم مكون من 11 رقم')
-                ->rules('required|phone:'.config('app.PHONE_COUNTRIES'))
-                ->live()
-                ->afterStateUpdated(function ($livewire, $component) {
-                    // live validation
-                    $livewire->validateOnly($component->getStatePath());
-                }),
+                ->rules('required|phone:'.config('app.PHONE_COUNTRIES')),
             Forms\Components\Select::make('group_id')
                 ->required()
                 ->label('المجموعة')

@@ -41,12 +41,7 @@ class BranchResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->validationMessages([
                         'unique' => 'الإسم مسجل مسبقاً',
-                    ])
-                    ->live()
-                    ->afterStateUpdated(function ($livewire, $component) {
-                        // live validation
-                        $livewire->validateOnly($component->getStatePath());
-                    }),
+                    ]),
                 Forms\Components\TextInput::make('arabic_name')
                     ->label('الإسم بالعربي')
                     ->unique(ignoreRecord: true)
@@ -54,11 +49,6 @@ class BranchResource extends Resource
                     ->validationMessages([
                         'unique' => 'الإسم مسجل مسبقاً',
                     ])
-                    ->live()
-                    ->afterStateUpdated(function ($livewire, $component) {
-                        // live validation
-                        $livewire->validateOnly($component->getStatePath());
-                    }),
             ]);
     }
 
