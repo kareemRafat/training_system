@@ -26,16 +26,23 @@ class ShowCommentAction extends Action
             ->extraAttributes(['class' => 'text-xs p-1'])
             ->icon('heroicon-s-chat-bubble-bottom-center')
             ->badge(
-                fn (Model $record) => $record->comments_count > 0
+                fn(Model $record) => $record->comments_count > 0
                     ? $record->comments_count
                     : null
             )
             ->url(function ($record) {
-                return $this->viewCommentsClass::getUrl(['record' => $record]);
+
+                // Extract the Resource class from the Page's namespace
+                $resourceClass = preg_replace('/\\\Pages\\\.+$/', '', $this->viewCommentsClass);
+
+                return $resourceClass::getUrl(
+                    'view-comments',
+                    ['record' => $record]
+                );
             })
-            ->disabled(fn (Model $record) => $record->comments_count === 0)
+            ->disabled(fn(Model $record) => $record->comments_count === 0)
             ->button()
             ->size(ActionSize::Small)
-            ->color(fn (Model $record) => $record->comments_count > 0 ? 'rose' : Color::Stone);
+            ->color(fn(Model $record) => $record->comments_count > 0 ? 'rose' : Color::Stone);
     }
 }
