@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->foreignIdFor(\App\Models\Branch::class)->nullable();
-            $table->boolean('active');
+            $table->boolean('active')->default(1);
         });
     }
 
