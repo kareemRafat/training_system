@@ -63,26 +63,15 @@ class AddStudents extends Page
                 ->options(
                     Group::when(
                         Auth::check() && Auth::user()->branch_id,
-                        fn ($query) => $query->where('branch_id', Auth::user()->branch_id),
-                        fn ($query) => $query
+                        fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                        fn($query) => $query
                     )
                         ->orderBy('end_date', 'desc')
                         ->limit(5)
                         ->pluck('name', 'id')
                 )
                 ->searchable()
-                ->reactive()
-                ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                    $students = $get('students') ?? [];
-                    $group = Group::find($state);
-                    foreach ($students as $key => $student) {
-                        $students[$key]['group_id'] = $state;
-                        if ($group) {
-                            $students[$key]['branch_id'] = $group->branch_id;
-                        }
-                    }
-                    $set('students', $students);
-                }),
+                ->reactive(),
 
             // Students Repeater
             Repeater::make('students')
@@ -103,7 +92,7 @@ class AddStudents extends Page
                                 ->label('رقم الهاتف')
                                 ->type('tel')
                                 ->unique(ignoreRecord: true)
-                                ->rule(['phone:'.config('app.PHONE_COUNTRIES')])
+                                ->rule(['phone:' . config('app.PHONE_COUNTRIES')])
                                 ->validationMessages([
                                     'required' => 'يجب ادخال رقم التليفون',
                                 ])
@@ -145,7 +134,11 @@ class AddStudents extends Page
                 ->label('طـلاب جـدد')
                 ->collapsible()
                 ->columnSpanFull()
-                ->itemLabel(fn (array $state): ?string => $state['name'] ?: 'طالب جديد'),
+                ->itemLabel(fn(array $state): ?string => $state['name'] ?: 'طالب جديد'),
+            \Filament\Forms\Components\Hidden::make('branch_id')
+                ->default(fn(callable $get) => optional(\App\Models\Group::find($get('../../global_group_id')))->branch_id)
+                ->dehydrated(true),
+
         ];
     }
 
@@ -156,9 +149,10 @@ class AddStudents extends Page
         foreach ($data['students'] as $student) {
             // Save each student to database
             $student['created_at'] = now();
+            $student['group_id'] = $data['global_group_id'];
+            $student['branch_id'] = \App\Models\Group::find($data['global_group_id'])->branch_id;
             \App\Models\Student::create($student);
         }
-
         Notification::make()
             ->title('تم إضافة الـطلاب بنجاح')
             ->success()
