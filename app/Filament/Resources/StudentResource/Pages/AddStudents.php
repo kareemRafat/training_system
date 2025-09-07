@@ -103,10 +103,9 @@ class AddStudents extends Page
                                 ->label('رقم الهاتف')
                                 ->type('tel')
                                 ->unique(ignoreRecord: true)
-                                ->rule(['unique:students,phone', 'phone:'.config('app.PHONE_COUNTRIES')])
+                                ->rule(['phone:'.config('app.PHONE_COUNTRIES')])
                                 ->validationMessages([
                                     'required' => 'يجب ادخال رقم التليفون',
-                                    'unique' => 'التليفون مسجل من قبل',
                                 ])
                                 ->inputMode('tel')
                                 ->helperText('يجب أن يكون الرقم مكون من 11 رقم')
