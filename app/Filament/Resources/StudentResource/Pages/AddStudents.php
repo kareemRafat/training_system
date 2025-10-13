@@ -91,18 +91,11 @@ class AddStudents extends Page
                                 ->required()
                                 ->label('رقم الهاتف')
                                 ->type('tel')
-                                ->unique(ignoreRecord: true)
-                                ->rule(['phone:' . config('app.PHONE_COUNTRIES')])
+                                ->rule(['phone:' . config('app.PHONE_COUNTRIES'),'unique:students,phone'])
                                 ->validationMessages([
                                     'required' => 'يجب ادخال رقم التليفون',
                                 ])
-                                ->inputMode('tel')
-                                ->helperText('يجب أن يكون الرقم مكون من 11 رقم')
-                                ->live()
-                                ->afterStateUpdated(function ($livewire, $component) {
-                                    // live validation
-                                    $livewire->validateOnly($component->getStatePath());
-                                }),
+                                ->helperText('يجب أن يكون الرقم مكون من 11 رقم'),
                             Radio::make('start')
                                 ->required()
                                 ->label('ملاحظات البداية')
