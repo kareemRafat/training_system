@@ -54,12 +54,27 @@ class AddStudents extends Page
     {
         return [
             // Global Group Selector
-            Select::make('global_group_id')
+            Select::make('group_id')
                 ->required()
+                ->label('تحديد مجموعة موحدة لجميع الطلاب')
                 ->validationMessages([
                     'required' => 'يجب اختيار جروب لإضافة الطلاب',
                 ])
-                ->label('تحديد مجموعة موحدة لجميع الطلاب')
+                ->searchable()
+                ->getSearchResultsUsing(function (string $search) {
+                    return Group::when(
+                        Auth::check() && Auth::user()->branch_id,
+                        fn($query) => $query->where('branch_id', Auth::user()->branch_id),
+                        fn($query) => $query
+                    )
+                        ->where('name', 'like', "%{$search}%")
+                        ->limit(50)
+                        ->pluck('name', 'id')
+                        ->toArray();
+                })
+                ->getOptionLabelUsing(function ($value) {
+                    return Group::where('id', $value)->value('name');
+                })
                 ->options(
                     Group::when(
                         Auth::check() && Auth::user()->branch_id,
@@ -67,10 +82,10 @@ class AddStudents extends Page
                         fn($query) => $query
                     )
                         ->orderBy('end_date', 'desc')
-                        ->limit(5)
+                        ->limit(20)
                         ->pluck('name', 'id')
+                        ->toArray()
                 )
-                ->searchable()
                 ->reactive(),
 
             // Students Repeater
@@ -91,7 +106,7 @@ class AddStudents extends Page
                                 ->required()
                                 ->label('رقم الهاتف')
                                 ->type('tel')
-                                ->rule(['phone:' . config('app.PHONE_COUNTRIES'),'unique:students,phone'])
+                                ->rule(['phone:' . config('app.PHONE_COUNTRIES'), 'unique:students,phone'])
                                 ->validationMessages([
                                     'required' => 'يجب ادخال رقم التليفون',
                                 ])
