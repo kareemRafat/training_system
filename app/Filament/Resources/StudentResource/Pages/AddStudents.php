@@ -54,7 +54,7 @@ class AddStudents extends Page
     {
         return [
             // Global Group Selector
-            Select::make('group_id')
+            Select::make('global_group_id')
                 ->required()
                 ->label('تحديد مجموعة موحدة لجميع الطلاب')
                 ->validationMessages([
