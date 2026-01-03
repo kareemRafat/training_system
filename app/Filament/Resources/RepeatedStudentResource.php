@@ -157,6 +157,7 @@ class RepeatedStudentResource extends Resource
                     })
                     ->whereRepeatStatus('waiting')
                     ->withCount('comments')
+                    ->with('activityLogs')
             )
             ->defaultPaginationPageOption(25)
             ->recordAction(null) // prevent clickable row

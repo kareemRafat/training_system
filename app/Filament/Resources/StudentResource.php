@@ -134,6 +134,7 @@ class StudentResource extends Resource
                     })
                     ->whereNull('training_group_id')
                     ->withCount('comments')
+                    ->with('activityLogs')
             )
             ->defaultPaginationPageOption(25)
             ->recordAction(null) // prevent clickable row

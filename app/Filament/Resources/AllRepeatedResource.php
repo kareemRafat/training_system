@@ -140,6 +140,7 @@ class AllRepeatedResource extends Resource
                         $query->where('branch_id', Auth::user()->branch_id);
                     })
                     ->withCount('comments')
+                    ->with('activityLogs')
             )
             ->defaultPaginationPageOption(25)
             ->recordAction(null) // prevent clickable row
