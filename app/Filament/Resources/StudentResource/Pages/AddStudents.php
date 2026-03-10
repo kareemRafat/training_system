@@ -110,7 +110,7 @@ class AddStudents extends Page
                                 ->required()
                                 ->label('رقم الهاتف')
                                 ->type('tel')
-                                ->rule(['phone:' . config('app.PHONE_COUNTRIES'), 'unique:students,phone'])
+                                ->rule(['phone:' . config('app.PHONE_COUNTRIES')])
                                 ->validationMessages([
                                     'required' => 'يجب ادخال رقم التليفون',
                                 ])

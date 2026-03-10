@@ -21,7 +21,12 @@ This plan outlines the steps to add a checkbox in the "Add Students" repeater pa
 - [x] **Task 3.2: Update Logic in StudentResource**
     - Use `afterCreate` hook in `Pages/CreateStudent.php` to handle repeat logic and `instructor_id`.
 
-## Milestone 4: Verification & Testing
-- [ ] **Task 4.1: Manual Testing**
-    - Verify that checking the box for one student in the list correctly adds them to both `students` and `repeated_students` tables.
-    - Verify that unchecking the box only adds them to the `students` table.
+## Milestone 4: Verification & Testing (IN PROGRESS)
+- [ ] **Task 4.1: Manual Testing (Multi-Student)**
+    - Add multiple students via "إضافة طلاب" page.
+    - Check "Repeat" for some, leave others unchecked.
+    - Verify both `students` and `repeated_students` tables.
+- [ ] **Task 4.2: Manual Testing (Single Student)**
+    - Add a single student via the "Create" button on the Students list.
+    - Check "Repeat" and select track/instructor.
+    - Verify no SQL errors occur and records are created in both tables.
