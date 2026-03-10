@@ -81,7 +81,6 @@ class StudentResource extends Resource
                     ->required()
                     ->label('رقم الهاتف')
                     ->type('tel')
-                    ->unique(ignoreRecord: true)
                     ->inputMode('tel')
                     ->helperText('يجب أن يكون الرقم مكون من 11 رقم')
                     ->rules('required|phone:'.config('app.PHONE_COUNTRIES')),
