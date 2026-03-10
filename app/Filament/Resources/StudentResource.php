@@ -120,6 +120,46 @@ class StudentResource extends Resource
                     ->extraAttributes([
                         'style' => 'border: 2px solid #cccccc75; border-radius: 10px; padding: 10px;',
                     ]),
+
+                Forms\Components\Section::make('طلبات الإعادة')
+                    ->description('إضافة الطالب إلى قائمة الإعادة مباشرة عند التسجيل')
+                    ->schema([
+                        Forms\Components\Grid::make(3)
+                            ->schema([
+                                Forms\Components\Checkbox::make('is_repeated')
+                                    ->label('طالب إعادة؟')
+                                    ->live()
+                                    ->dehydrated(false),
+                                Forms\Components\Select::make('track_start')
+                                    ->label('إعادة من ...')
+                                    ->options([
+                                        'html' => 'HTML',
+                                        'css' => 'CSS',
+                                        'javascript' => 'JavaScript',
+                                        'php' => 'PHP',
+                                        'project' => 'Project',
+                                        'mysql' => 'MySQL',
+                                    ])
+                                    ->visible(fn (callable $get) => $get('is_repeated'))
+                                    ->required(fn (callable $get) => $get('is_repeated'))
+                                    ->dehydrated(false),
+                                Forms\Components\Select::make('instructor_id')
+                                    ->label('المحاضر المطلوب')
+                                    ->options(
+                                        \App\Models\Instructor::where('active', true)
+                                            ->when(
+                                                Auth::check() && Auth::user()->branch_id,
+                                                fn ($query) => $query->where('branch_id', Auth::user()->branch_id)
+                                            )
+                                            ->pluck('name', 'id')
+                                    )
+                                    ->searchable()
+                                    ->visible(fn (callable $get) => $get('is_repeated'))
+                                    ->dehydrated(false),
+                            ]),
+                    ])
+                    ->compact()
+                    ->columnSpanFull(),
             ]);
     }
 

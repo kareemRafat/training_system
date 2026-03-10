@@ -4,7 +4,9 @@ namespace App\Filament\Resources\StudentResource\Pages;
 
 use App\Filament\Resources\StudentResource;
 use App\Models\Group;
+use App\Models\RepeatedStudent;
 use Filament\Actions;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
@@ -40,6 +42,8 @@ class AddStudents extends Page
                 'branch_id' => null,
                 'start' => 'delay',
                 'status' => 'normal',
+                'is_repeated' => false,
+                'track_start' => null,
             ]),
         ]);
 
@@ -137,6 +141,33 @@ class AddStudents extends Page
                                 ->default('normal')
                                 ->inline()
                                 ->inlineLabel(false),
+                            Checkbox::make('is_repeated')
+                                ->label('طالب إعادة؟')
+                                ->live(),
+                            Select::make('track_start')
+                                ->label('إعادة من ...')
+                                ->options([
+                                    'html' => 'HTML',
+                                    'css' => 'CSS',
+                                    'javascript' => 'JavaScript',
+                                    'php' => 'PHP',
+                                    'project' => 'Project',
+                                    'mysql' => 'MySQL',
+                                ])
+                                ->visible(fn (callable $get) => $get('is_repeated'))
+                                ->required(fn (callable $get) => $get('is_repeated')),
+                            Select::make('instructor_id')
+                                ->label('المحاضر المطلوب')
+                                ->options(
+                                    \App\Models\Instructor::where('active', true)
+                                        ->when(
+                                            Auth::check() && Auth::user()->branch_id,
+                                            fn ($query) => $query->where('branch_id', Auth::user()->branch_id)
+                                        )
+                                        ->pluck('name', 'id')
+                                )
+                                ->searchable()
+                                ->visible(fn (callable $get) => $get('is_repeated')),
                         ]),
                 ])
                 ->label('طـلاب جـدد')
@@ -155,11 +186,32 @@ class AddStudents extends Page
         $data = $this->form->getState();
         // Process your data here
         foreach ($data['students'] as $student) {
+            $is_repeated = $student['is_repeated'] ?? false;
+            $track_start = $student['track_start'] ?? null;
+            $instructor_id = $student['instructor_id'] ?? null;
+
+            // Remove non-model fields before creating student
+            unset($student['is_repeated'], $student['track_start'], $student['instructor_id']);
+
             // Save each student to database
             $student['created_at'] = now();
             $student['group_id'] = $data['global_group_id'];
             $student['branch_id'] = \App\Models\Group::find($data['global_group_id'])->branch_id;
             \App\Models\Student::create($student);
+
+            // If repeated, create record in repeated_students table
+            if ($is_repeated && $track_start) {
+                RepeatedStudent::create([
+                    'name' => $student['name'],
+                    'phone' => $student['phone'],
+                    'track_start' => $track_start,
+                    'repeat_status' => 'waiting',
+                    'group_id' => $student['group_id'],
+                    'branch_id' => $student['branch_id'],
+                    'instructor_id' => $instructor_id,
+                    'created_at' => $student['created_at'],
+                ]);
+            }
         }
         Notification::make()
             ->title('تم إضافة الـطلاب بنجاح')
