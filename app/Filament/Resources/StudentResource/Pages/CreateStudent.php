@@ -10,19 +10,34 @@ class CreateStudent extends CreateRecord
 {
     protected static string $resource = StudentResource::class;
 
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        // Store repeated data in a temporary property to use in afterCreate
+        $this->repeatedData = [
+            'is_repeated' => $data['is_repeated'] ?? false,
+            'track_start' => $data['track_start'] ?? null,
+            'instructor_id' => $data['instructor_id'] ?? null,
+        ];
+
+        // Remove from $data so it doesn't try to save to Student model
+        unset($data['is_repeated'], $data['track_start'], $data['instructor_id']);
+
+        return $data;
+    }
+
     protected function afterCreate(): void
     {
-        $data = $this->form->getState();
+        $repData = $this->repeatedData ?? [];
 
-        if ($data['is_repeated'] ?? false && $data['track_start'] ?? null) {
+        if ($repData['is_repeated'] && $repData['track_start']) {
             RepeatedStudent::create([
                 'name' => $this->record->name,
                 'phone' => $this->record->phone,
-                'track_start' => $data['track_start'],
+                'track_start' => $repData['track_start'],
                 'repeat_status' => 'waiting',
                 'group_id' => $this->record->group_id,
                 'branch_id' => $this->record->branch_id,
-                'instructor_id' => $data['instructor_id'] ?? null,
+                'instructor_id' => $repData['instructor_id'],
                 'created_at' => $this->record->created_at ?: now(),
             ]);
         }

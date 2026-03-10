@@ -128,8 +128,7 @@ class StudentResource extends Resource
                             ->schema([
                                 Forms\Components\Checkbox::make('is_repeated')
                                     ->label('طالب إعادة؟')
-                                    ->live()
-                                    ->dehydrated(false),
+                                    ->live(),
                                 Forms\Components\Select::make('track_start')
                                     ->label('إعادة من ...')
                                     ->options([
@@ -141,8 +140,7 @@ class StudentResource extends Resource
                                         'mysql' => 'MySQL',
                                     ])
                                     ->visible(fn (callable $get) => $get('is_repeated'))
-                                    ->required(fn (callable $get) => $get('is_repeated'))
-                                    ->dehydrated(false),
+                                    ->required(fn (callable $get) => $get('is_repeated')),
                                 Forms\Components\Select::make('instructor_id')
                                     ->label('المحاضر المطلوب')
                                     ->options(
@@ -154,8 +152,7 @@ class StudentResource extends Resource
                                             ->pluck('name', 'id')
                                     )
                                     ->searchable()
-                                    ->visible(fn (callable $get) => $get('is_repeated'))
-                                    ->dehydrated(false),
+                                    ->visible(fn (callable $get) => $get('is_repeated')),
                             ]),
                     ])
                     ->compact()
